@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import AddGameInput from "./components/AddGameInput";
+import Link from "next/link";
 
 async function GameList() {
     try {
@@ -43,9 +44,12 @@ async function GameList() {
                             <span className="text-sm text-slate-400">
                                 ID Steam: {game.steamAppId}
                             </span>
-                            <button className="text-emerald-400 font-bold border border-emerald-400 px-3 py-1 rounded hover:bg-emerald-400/10">
+                            <Link
+                                href={`/game/${game.id}`}
+                                className="text-emerald-400 font-bold border border-emerald-400 px-3 py-1 rounded hover:bg-emerald-400/10 transition-colors"
+                            >
                                 Ver Detalhes
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 ))}
