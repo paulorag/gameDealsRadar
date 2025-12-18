@@ -17,20 +17,17 @@ import java.util.List;
 public class GameController {
 
     private final GameRepository gameRepository;
-    private final SteamScraperService scraperService; // Injete o Scraper
+    private final SteamScraperService scraperService;
 
     @GetMapping
     public ResponseEntity<List<Game>> findAll() {
         return ResponseEntity.ok(gameRepository.findAll());
     }
 
-    // NOVO MÉTODO: Recebe o JSON { "url": "..." } e processa
     @PostMapping
     public ResponseEntity<Void> addGame(@RequestBody NewGameRequest request) {
-        // Chama o scraper para ir na Steam, baixar dados e salvar
         scraperService.extractAndSaveGame(request.url());
 
-        // Retorna 201 Created (Sucesso sem corpo de resposta)
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

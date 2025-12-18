@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function AddGameInput() {
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
-    const router = useRouter(); // Para recarregar a página após salvar
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -15,8 +15,6 @@ export default function AddGameInput() {
         setLoading(true);
 
         try {
-            // Bate no nosso backend Java
-            // Atenção: Aqui no Client (Navegador), usamos localhost:8080 normal
             const res = await fetch("http://localhost:8080/games", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -24,8 +22,8 @@ export default function AddGameInput() {
             });
 
             if (res.ok) {
-                setUrl(""); // Limpa o input
-                router.refresh(); // Recarrega os dados da página (GameList) sem F5
+                setUrl("");
+                router.refresh();
             } else {
                 alert(
                     "Erro ao adicionar jogo. Verifique o link ou o console do Backend."

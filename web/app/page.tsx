@@ -1,16 +1,8 @@
 import { Suspense } from "react";
 import AddGameInput from "./components/AddGameInput";
 
-// Componente que vai buscar os dados (Server Component)
 async function GameList() {
-    // ATENÇÃO: No Next 15, o fetch precisa ser tratado com carinho
-    // URL absoluta é necessária no server-side docker/node
-    // Para teste local do navegador (client), usamos relativa, mas aqui é Server Component.
-    // Vamos deixar hardcoded localhost:8080 por enquanto para testar a comunicação container-to-host ou local.
-
     try {
-        // Tenta bater na API.
-        // 'no-store': garante que sempre pegue o preço atual (Real-time), sem cache velho.
         const res = await fetch("http://localhost:8080/games", {
             cache: "no-store",
         });
@@ -29,7 +21,6 @@ async function GameList() {
                         className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transition-all"
                     >
                         {game.imageUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
                             <img
                                 src={game.imageUrl}
                                 alt={game.title}
@@ -52,7 +43,6 @@ async function GameList() {
                             <span className="text-sm text-slate-400">
                                 ID Steam: {game.steamAppId}
                             </span>
-                            {/* Vamos tratar o preço no futuro, por enquanto exibe o objeto ou nada */}
                             <button className="text-emerald-400 font-bold border border-emerald-400 px-3 py-1 rounded hover:bg-emerald-400/10">
                                 Ver Detalhes
                             </button>
@@ -82,7 +72,6 @@ export default function Home() {
             </p>
 
             <AddGameInput />
-            {/* Suspense: Mostra "Carregando..." enquanto o fetch do GameList não termina */}
             <Suspense
                 fallback={
                     <p className="text-yellow-400 animate-pulse">
