@@ -1,0 +1,21 @@
+# --- RAIZ DO MONOREPO ---
+
+# 1. Arquivos de Sistema Operacional (Lixo)
+.DS_Store
+Thumbs.db
+*.log
+
+# 2. Configurações de IDE (VS Code / JetBrains)
+.vscode/
+.idea/
+*.iml
+
+# 3. Variáveis de Ambiente e Segredos (CRÍTICO PARA DOCKER)
+# Nunca suba arquivos .env para o GitHub!
+.env
+.env.local
+postgres_data/
+pgdata/
+
+# 4. Pastas de Volume do Docker (se houver mapeamento local)
+/data/

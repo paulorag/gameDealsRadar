@@ -1,0 +1,18 @@
+CREATE TABLE games (
+    id UUID PRIMARY KEY,
+    steam_app_id VARCHAR(50) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    url_link TEXT NOT NULL,
+    image_url TEXT,
+    target_price DECIMAL(10, 2),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE price_history (
+    id UUID PRIMARY KEY,
+    game_id UUID NOT NULL REFERENCES games(id),
+    price DECIMAL(10, 2) NOT NULL,
+    check_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    currency VARCHAR(3) DEFAULT 'BRL'
+);
