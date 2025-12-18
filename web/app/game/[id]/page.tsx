@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import PriceChart from "../../components/PriceChart";
 
 async function GameHistory({ id }: { id: string }) {
     try {
@@ -16,10 +17,11 @@ async function GameHistory({ id }: { id: string }) {
         }
 
         return (
-            <div className="w-full max-w-2xl">
+            <div className="w-full max-w-4xl">
                 <h2 className="text-2xl font-bold text-white mb-4">
                     Histórico de Preços
                 </h2>
+                <PriceChart data={history} />
                 <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
                     <table className="w-full text-left text-slate-300">
                         <thead className="bg-slate-900 text-slate-400 uppercase text-xs">
