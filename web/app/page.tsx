@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import AddGameInput from "./components/AddGameInput";
 
 // Componente que vai buscar os dados (Server Component)
 async function GameList() {
@@ -80,6 +81,7 @@ export default function Home() {
                 Monitorando preços em tempo real com Next.js 15 & Spring Boot
             </p>
 
+            <AddGameInput />
             {/* Suspense: Mostra "Carregando..." enquanto o fetch do GameList não termina */}
             <Suspense
                 fallback={
