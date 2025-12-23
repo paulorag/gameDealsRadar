@@ -4,9 +4,7 @@ import com.gamedeals.radar.modules.catalog.domain.Game;
 import com.gamedeals.radar.modules.catalog.domain.PriceHistory;
 import com.gamedeals.radar.modules.catalog.repository.GameRepository;
 import com.gamedeals.radar.modules.catalog.repository.PriceHistoryRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,38 +30,9 @@ public class SteamScraperService {
                 return;
             }
 
-            Document doc = Jsoup.connect(url)
-                    .cookie("birthtime", "568022401")
-                    .cookie("lastagecheckage", "1-0-1988")
-                    .cookie("wants_mature_content", "1")
-                    .get();
+            Document doc = fetchSteamPage(url);
 
-            String title = doc.selectFirst("#appHubAppName").text();
-            String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
-
-            Element priceElement = doc.selectFirst(".game_purchase_price");
-            if (priceElement == null) {
-                priceElement = doc.selectFirst(".discount_final_price");
-            }
-            BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
-
-            Game game = gameRepository.findBySteamAppId(steamAppId)
-                    .orElse(new Game());
-
-            game.setSteamAppId(steamAppId);
-            game.setTitle(title);
-            game.setUrlLink(url);
-            game.setImageUrl(imageUrl);
-
-            gameRepository.save(game);
-
-            PriceHistory history = new PriceHistory();
-            history.setGame(game);
-            history.setPrice(price);
-
-            priceHistoryRepository.save(history);
-
-            System.out.println("✅ Jogo processado: " + title + " | Preço: " + price);
+            saveGameData(doc, steamAppId, url);
 
         } catch (IOException e) {
             System.err.println("Erro de conexão: " + e.getMessage());
@@ -71,6 +40,43 @@ public class SteamScraperService {
             System.err.println("Erro inesperado: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    protected Document fetchSteamPage(String url) throws IOException {
+        return Jsoup.connect(url)
+                .cookie("birthtime", "568022401")
+                .cookie("lastagecheckage", "1-0-1988")
+                .cookie("wants_mature_content", "1")
+                .get();
+    }
+
+    protected void saveGameData(Document doc, String steamAppId, String url) {
+        String title = doc.selectFirst("#appHubAppName").text();
+        String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
+
+        Element priceElement = doc.selectFirst(".game_purchase_price");
+        if (priceElement == null) {
+            priceElement = doc.selectFirst(".discount_final_price");
+        }
+        BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
+
+        Game game = gameRepository.findBySteamAppId(steamAppId)
+                .orElse(new Game());
+
+        game.setSteamAppId(steamAppId);
+        game.setTitle(title);
+        game.setUrlLink(url);
+        game.setImageUrl(imageUrl);
+
+        gameRepository.save(game);
+
+        PriceHistory history = new PriceHistory();
+        history.setGame(game);
+        history.setPrice(price);
+
+        priceHistoryRepository.save(history);
+
+        System.out.println("✅ Jogo processado: " + title + " | Preço: " + price);
     }
 
     private BigDecimal cleanPrice(String priceText) {
