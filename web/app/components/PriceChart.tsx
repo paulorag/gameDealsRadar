@@ -74,8 +74,8 @@ export default function PriceChart({ data }: PriceChartProps) {
                         }}
                         itemStyle={{ color: "#34d399" }}
                         labelStyle={{ color: "#94a3b8", marginBottom: "4px" }}
-                        formatter={(value: number) => [
-                            `R$ ${value.toFixed(2)}`,
+                        formatter={(value: number | undefined) => [
+                            `R$ ${value?.toFixed(2) ?? "0.00"}`,
                             "Preço",
                         ]}
                     />
