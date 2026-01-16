@@ -2,9 +2,9 @@
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-COPY radar/ . 
-
-RUN ls -la
+# MUDANÇA AQUI: Como o Dockerfile já está dentro da pasta radar,
+# copiamos o diretório atual (.) para o container
+COPY . .
 
 RUN mvn clean package -DskipTests
 
