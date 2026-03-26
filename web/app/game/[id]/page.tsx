@@ -3,9 +3,13 @@ import PriceChart from "../../components/PriceChart";
 
 async function GameHistory({ id }: { id: string }) {
     try {
-        const res = await fetch(`http://localhost:8080/games/${id}/history`, {
+        const apiUrl =
+            process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+        const res = await fetch(`${apiUrl}/games/${id}/history`, {
             cache: "no-store",
         });
+
         const history = await res.json();
 
         if (!history || history.length === 0) {
@@ -38,7 +42,7 @@ async function GameHistory({ id }: { id: string }) {
                                 >
                                     <td className="px-6 py-4">
                                         {new Date(
-                                            item.checkDate
+                                            item.checkDate,
                                         ).toLocaleString("pt-BR")}
                                     </td>
                                     <td className="px-6 py-4 font-bold text-emerald-400">
