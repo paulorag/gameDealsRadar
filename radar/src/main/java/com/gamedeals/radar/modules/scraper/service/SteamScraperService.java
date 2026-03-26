@@ -43,7 +43,8 @@ public class SteamScraperService {
     }
 
     protected Document fetchSteamPage(String url) throws IOException {
-        return Jsoup.connect(url)
+        String urlWithRegion = url.contains("?") ? url + "&cc=br" : url + "?cc=br";
+        return Jsoup.connect(urlWithRegion)
                 .cookie("birthtime", "568022401")
                 .cookie("lastagecheckage", "1-0-1988")
                 .cookie("wants_mature_content", "1")
@@ -82,11 +83,18 @@ public class SteamScraperService {
     }
 
     private BigDecimal cleanPrice(String priceText) {
-        if (priceText == null || priceText.toLowerCase().contains("free")
+       if (priceText == null || priceText.toLowerCase().contains("free")
                 || priceText.toLowerCase().contains("gratuito")) {
             return BigDecimal.ZERO;
         }
-        String clean = priceText.replaceAll("[^0-9,]", "").replace(",", ".");
+    
+        String clean = priceText.replaceAll("[^0-9.,]", "");
+        
+        if (clean.contains(",")) {
+            clean = clean.replace(".", ""); 
+            clean = clean.replace(",", "."); 
+        }
+        
         return new BigDecimal(clean);
     }
 
