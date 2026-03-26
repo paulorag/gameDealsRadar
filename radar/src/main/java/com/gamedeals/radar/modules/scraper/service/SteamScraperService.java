@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class SteamScraperService {
                 break;
             }
         }
-        
+
         BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
 
         Game game = gameRepository.findBySteamAppId(steamAppId)
