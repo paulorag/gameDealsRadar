@@ -58,7 +58,7 @@ async function GameHistory({ id }: { id: string }) {
             </div>
         );
     } catch (error) {
-        return <p className="text-red-400">Erro ao carregar histórico.</p>;
+        return <p className="text-red-400">Erro ao carregar histórico!</p>;
     }
 }
 
