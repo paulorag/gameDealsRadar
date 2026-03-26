@@ -47,6 +47,8 @@ public class SteamScraperService {
                 .cookie("birthtime", "568022401")
                 .cookie("lastagecheckage", "1-0-1988")
                 .cookie("wants_mature_content", "1")
+                .cookie("cc", "br")
+                .cookie("l", "portuguese")
                 .get();
     }
 
