@@ -57,9 +57,15 @@ public class SteamScraperService {
         String title = doc.selectFirst("#appHubAppName").text();
         String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
 
-        Element priceElement = doc.selectFirst(".game_purchase_price");
-        if (priceElement == null) {
-            priceElement = doc.selectFirst(".discount_final_price");
+        Element purchaseArea = doc.selectFirst(".game_area_purchase_game");
+        Element priceElement = null;
+
+        if (purchaseArea != null) {
+            priceElement = purchaseArea.selectFirst(".game_purchase_price");
+
+            if (priceElement == null) {
+                priceElement = purchaseArea.selectFirst(".discount_final_price");
+            }
         }
         BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
 
@@ -83,18 +89,18 @@ public class SteamScraperService {
     }
 
     private BigDecimal cleanPrice(String priceText) {
-       if (priceText == null || priceText.toLowerCase().contains("free")
+        if (priceText == null || priceText.toLowerCase().contains("free")
                 || priceText.toLowerCase().contains("gratuito")) {
             return BigDecimal.ZERO;
         }
-    
+
         String clean = priceText.replaceAll("[^0-9.,]", "");
-        
+
         if (clean.contains(",")) {
-            clean = clean.replace(".", ""); 
-            clean = clean.replace(",", "."); 
+            clean = clean.replace(".", "");
+            clean = clean.replace(",", ".");
         }
-        
+
         return new BigDecimal(clean);
     }
 
