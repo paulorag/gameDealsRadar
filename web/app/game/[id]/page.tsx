@@ -43,7 +43,9 @@ async function GameHistory({ id }: { id: string }) {
                                     <td className="px-6 py-4">
                                         {new Date(
                                             item.checkDate,
-                                        ).toLocaleString("pt-BR")}
+                                        ).toLocaleString("pt-BR", {
+                                            timeZone: "America/Sao_Paulo",
+                                        })}
                                     </td>
                                     <td className="px-6 py-4 font-bold text-emerald-400">
                                         R$ {item.price.toFixed(2)}
