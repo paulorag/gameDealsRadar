@@ -57,16 +57,21 @@ public class SteamScraperService {
         String title = doc.selectFirst("#appHubAppName").text();
         String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
 
-        Element purchaseArea = doc.selectFirst(".game_area_purchase_game");
+        Elements purchaseAreas = doc.select(".game_area_purchase_game");
         Element priceElement = null;
 
-        if (purchaseArea != null) {
-            priceElement = purchaseArea.selectFirst(".game_purchase_price");
+        for (Element area : purchaseAreas) {
+            priceElement = area.selectFirst(".game_purchase_price");
 
             if (priceElement == null) {
-                priceElement = purchaseArea.selectFirst(".discount_final_price");
+                priceElement = area.selectFirst(".discount_final_price");
+            }
+
+            if (priceElement != null) {
+                break;
             }
         }
+        
         BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
 
         Game game = gameRepository.findBySteamAppId(steamAppId)
