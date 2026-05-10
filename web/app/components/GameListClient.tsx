@@ -48,7 +48,9 @@ export default function GameListClient({ token }: { token: string | null }) {
     }, [token]);
 
     if (loading) {
-        return <p className="text-yellow-400 animate-pulse">Carregando jogos...</p>;
+        return (
+            <p className="text-yellow-400 animate-pulse">Carregando jogos...</p>
+        );
     }
 
     if (error) {

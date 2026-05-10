@@ -26,10 +26,13 @@ export default function GameHistoryClient({ id }: { id: string }) {
             }
 
             try {
-                const response = await fetch(`${getApiUrl()}/games/${id}/history`, {
-                    cache: "no-store",
-                    headers: getApiHeaders(),
-                });
+                const response = await fetch(
+                    `${getApiUrl()}/games/${id}/history`,
+                    {
+                        cache: "no-store",
+                        headers: getApiHeaders(),
+                    },
+                );
 
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -53,7 +56,11 @@ export default function GameHistoryClient({ id }: { id: string }) {
     }, [id, token]);
 
     if (loading) {
-        return <p className="text-yellow-400 animate-pulse">Carregando histórico...</p>;
+        return (
+            <p className="text-yellow-400 animate-pulse">
+                Carregando histórico...
+            </p>
+        );
     }
 
     if (error) {
@@ -61,12 +68,16 @@ export default function GameHistoryClient({ id }: { id: string }) {
     }
 
     if (history.length === 0) {
-        return <p className="text-slate-500">Nenhum histórico disponível ainda.</p>;
+        return (
+            <p className="text-slate-500">Nenhum histórico disponível ainda.</p>
+        );
     }
 
     return (
         <div className="w-full max-w-4xl">
-            <h2 className="text-2xl font-bold text-white mb-4">Histórico de Preços</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+                Histórico de Preços
+            </h2>
             <PriceChart data={history} />
             <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
                 <table className="w-full text-left text-slate-300">
@@ -80,9 +91,12 @@ export default function GameHistoryClient({ id }: { id: string }) {
                         {history.map((item: any) => (
                             <tr key={item.id} className="hover:bg-slate-700/50">
                                 <td className="px-6 py-4">
-                                    {new Date(item.checkDate).toLocaleString("pt-BR", {
-                                        timeZone: "America/Sao_Paulo",
-                                    })}
+                                    {new Date(item.checkDate).toLocaleString(
+                                        "pt-BR",
+                                        {
+                                            timeZone: "America/Sao_Paulo",
+                                        },
+                                    )}
                                 </td>
                                 <td className="px-6 py-4 font-bold text-emerald-400">
                                     R$ {item.price.toFixed(2)}
