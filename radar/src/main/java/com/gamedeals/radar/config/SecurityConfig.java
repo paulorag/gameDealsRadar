@@ -3,6 +3,7 @@ package com.gamedeals.radar.config;
 import com.gamedeals.radar.config.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +20,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter,
             JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login", "/auth/register", "/actuator/**").permitAll()
