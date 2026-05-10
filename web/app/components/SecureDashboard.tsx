@@ -8,6 +8,7 @@ import { getToken } from "../lib/api";
 
 export default function SecureDashboard() {
     const [token] = useState<string | null>(() => getToken());
+    const [reloadSignal, setReloadSignal] = useState(0);
 
     if (!token) {
         return (
@@ -39,8 +40,8 @@ export default function SecureDashboard() {
 
     return (
         <div className="w-full flex flex-col items-center gap-6">
-            <AddGameInput authenticated={Boolean(token)} />
-            <GameListClient token={token} />
+            <AddGameInput authenticated={Boolean(token)} onGameAdded={() => setReloadSignal((prev) => prev + 1)} />
+            <GameListClient token={token} reloadSignal={reloadSignal} />
         </div>
     );
 }

@@ -15,10 +15,10 @@ export default async function GameDetailsPage({
             </h1>
 
             <Link
-                href="/"
+                href="/dashboard"
                 className="mb-8 text-slate-400 hover:text-white transition-colors"
             >
-                ← Voltar para Home
+                ← Voltar para Dashboard
             </Link>
 
             <GameHistoryClient id={id} />

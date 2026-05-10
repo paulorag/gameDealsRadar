@@ -12,7 +12,7 @@ interface GameDto {
     imageUrl?: string;
 }
 
-export default function GameListClient({ token }: { token: string | null }) {
+export default function GameListClient({ token, reloadSignal }: { token: string | null; reloadSignal: number; }) {
     const [games, setGames] = useState<GameDto[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -40,7 +40,10 @@ export default function GameListClient({ token }: { token: string | null }) {
                 });
 
                 console.log("🔍 Debug: Response status:", response.status);
-                console.log("🔍 Debug: Response headers:", Object.fromEntries(response.headers.entries()));
+                console.log(
+                    "🔍 Debug: Response headers:",
+                    Object.fromEntries(response.headers.entries()),
+                );
 
                 if (!response.ok) {
                     const responseText = await response.text();
@@ -49,7 +52,9 @@ export default function GameListClient({ token }: { token: string | null }) {
                     if (response.status === 401) {
                         setError("Não autorizado. Faça login novamente.");
                     } else {
-                        setError(`Falha ao buscar jogos. Status: ${response.status}`);
+                        setError(
+                            `Falha ao buscar jogos. Status: ${response.status}`,
+                        );
                     }
                     return;
                 }
@@ -66,7 +71,7 @@ export default function GameListClient({ token }: { token: string | null }) {
         }
 
         loadGames();
-    }, [token]);
+    }, [token, reloadSignal]);
 
     if (loading) {
         return (

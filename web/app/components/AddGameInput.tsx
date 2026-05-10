@@ -6,12 +6,13 @@ import { getApiUrl, getApiHeaders } from "../lib/api";
 
 export default function AddGameInput({
     authenticated,
+    onGameAdded,
 }: {
     authenticated: boolean;
+    onGameAdded?: () => void;
 }) {
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,7 +37,7 @@ export default function AddGameInput({
 
             if (res.ok) {
                 setUrl("");
-                router.refresh();
+                onGameAdded?.();
             } else {
                 const body = await res.text();
                 console.error("🔍 Debug: POST /games erro", res.status, body);
