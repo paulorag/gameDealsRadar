@@ -1,4 +1,86 @@
-import SecureDashboard from "./components/SecureDashboard";
+import { Suspense } from "react";
+import AddGameInput from "./components/AddGameInput";
+import Link from "next/link";
+import { getApiUrl, getApiHeaders } from "./lib/api";
+
+async function GameList() {
+    const apiUrl = getApiUrl();
+    try {
+        const res = await fetch(`${apiUrl}/games`, {
+            cache: "no-store",
+            headers: getApiHeaders(),
+        });
+
+        if (!res.ok) {
+            if (res.status === 401) {
+                throw new Error(
+                    "Não autorizado. Verifique as credenciais Basic Auth no frontend.",
+                );
+            }
+            throw new Error("Falha ao buscar jogos");
+        }
+
+        const games = await res.json();
+
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
+                {games.map((game: any) => (
+                    <div
+                        key={game.id}
+                        className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transition-all"
+                    >
+                        {game.imageUrl ? (
+                            <img
+                                src={game.imageUrl}
+                                alt={game.title}
+                                className="w-full h-48 object-cover rounded mb-4"
+                            />
+                        ) : (
+                            <div className="w-full h-48 bg-slate-700 rounded mb-4 flex items-center justify-center text-slate-500">
+                                Sem Imagem
+                            </div>
+                        )}
+
+                        <h2
+                            className="text-xl font-bold text-white mb-2 truncate"
+                            title={game.title}
+                        >
+                            {game.title}
+                        </h2>
+
+                        <div className="flex justify-between items-end mt-4">
+                            <span className="text-sm text-slate-400">
+                                ID Steam: {game.steamAppId}
+                            </span>
+                            <Link
+                                href={`/game/${game.id}`}
+                                className="text-emerald-400 font-bold border border-emerald-400 px-3 py-1 rounded hover:bg-emerald-400/10 transition-colors"
+                            >
+                                Ver Detalhes
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    } catch (error: any) {
+        return (
+            <div className="p-4 border border-red-500 bg-red-500/10 rounded text-red-200">
+                {error.message.includes("Não autorizado") ? (
+                    <>
+                        <p>
+                            Não autorizado. Verifique suas credenciais Basic
+                            Auth.
+                        </p>
+                        <p>Use as variáveis de ambiente do frontend.</p>
+                    </>
+                ) : (
+                    <p>Erro ao conectar com o Backend. O Java está rodando?</p>
+                )}
+            </div>
+        );
+    }
+}
 
 export default function Home() {
     return (

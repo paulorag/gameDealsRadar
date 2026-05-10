@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getApiUrl, getApiHeaders, getToken } from "../lib/api";
+import { getApiUrl, getApiHeaders } from "../lib/api";
 
 export default function AddGameInput() {
     const [url, setUrl] = useState("");
@@ -20,6 +20,8 @@ export default function AddGameInput() {
 
         setLoading(true);
 
+        const apiUrl = getApiUrl();
+
         try {
             const res = await fetch(`${getApiUrl()}/games`, {
                 method: "POST",
@@ -31,10 +33,12 @@ export default function AddGameInput() {
                 setUrl("");
                 router.refresh();
             } else if (res.status === 401) {
-                alert("Não autorizado. Faça login novamente.");
+                alert(
+                    "Não autorizado. Verifique as credenciais Basic Auth configuradas.",
+                );
             } else {
                 alert(
-                    "Erro ao adicionar jogo. Verifique o link e as configurações do backend."
+                    "Erro ao adicionar jogo. Verifique o link e as configurações do backend.",
                 );
             }
         } catch (error) {
