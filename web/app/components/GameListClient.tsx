@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { getApiUrl, getApiHeaders } from "../lib/api";
 
+interface GameDto {
+    id: string;
+    steamAppId: string;
+    title: string;
+    imageUrl?: string;
+}
+
 export default function GameListClient({ token }: { token: string | null }) {
-    const [games, setGames] = useState<any[]>([]);
+    const [games, setGames] = useState<GameDto[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -37,7 +45,7 @@ export default function GameListClient({ token }: { token: string | null }) {
 
                 const data = await response.json();
                 setGames(data);
-            } catch (err) {
+            } catch {
                 setError("Erro ao conectar com o backend.");
             } finally {
                 setLoading(false);
@@ -48,7 +56,9 @@ export default function GameListClient({ token }: { token: string | null }) {
     }, [token]);
 
     if (loading) {
-        return <p className="text-yellow-400 animate-pulse">Carregando jogos...</p>;
+        return (
+            <p className="text-yellow-400 animate-pulse">Carregando jogos...</p>
+        );
     }
 
     if (error) {
@@ -61,17 +71,20 @@ export default function GameListClient({ token }: { token: string | null }) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
-            {games.map((game: any) => (
+            {games.map((game) => (
                 <div
                     key={game.id}
                     className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transition-all"
                 >
                     {game.imageUrl ? (
-                        <img
-                            src={game.imageUrl}
-                            alt={game.title}
-                            className="w-full h-48 object-cover rounded mb-4"
-                        />
+                        <div className="relative w-full h-48 rounded mb-4 overflow-hidden">
+                            <Image
+                                src={game.imageUrl}
+                                alt={game.title}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
                     ) : (
                         <div className="w-full h-48 bg-slate-700 rounded mb-4 flex items-center justify-center text-slate-500">
                             Sem Imagem

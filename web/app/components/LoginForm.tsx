@@ -1,14 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getApiUrl, getToken, removeToken, setToken } from "../lib/api";
 
-export default function LoginForm({ onAuthChange }: { onAuthChange?: () => void }) {
+export default function LoginForm({
+    onAuthChange,
+}: {
+    onAuthChange?: () => void;
+}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [token, setLocalToken] = useState<string | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         setLocalToken(getToken());
@@ -29,9 +36,10 @@ export default function LoginForm({ onAuthChange }: { onAuthChange?: () => void 
             });
 
             if (!response.ok) {
-                const message = response.status === 401
-                    ? "Credenciais inválidas."
-                    : "Falha ao autenticar.";
+                const message =
+                    response.status === 401
+                        ? "Credenciais inválidas."
+                        : "Falha ao autenticar.";
                 setError(message);
                 return;
             }
@@ -42,7 +50,8 @@ export default function LoginForm({ onAuthChange }: { onAuthChange?: () => void 
             setUsername("");
             setPassword("");
             onAuthChange?.();
-        } catch (err) {
+            router.push("/dashboard");
+        } catch {
             setError("Falha ao conectar com o servidor.");
         } finally {
             setLoading(false);
@@ -58,15 +67,23 @@ export default function LoginForm({ onAuthChange }: { onAuthChange?: () => void 
     if (token) {
         return (
             <div className="w-full max-w-xl mb-6 p-4 rounded-lg border border-emerald-500 bg-slate-900">
-                <div className="flex items-center justify-between gap-4">
-                    <p className="text-slate-200">Autenticado com token JWT.</p>
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded"
-                    >
-                        Logout
-                    </button>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p className="text-slate-200">Já está autenticado.</p>
+                    <div className="flex gap-3">
+                        <Link
+                            href="/dashboard"
+                            className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold px-4 py-2 rounded"
+                        >
+                            Abrir painel
+                        </Link>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </div>
         );
@@ -101,6 +118,15 @@ export default function LoginForm({ onAuthChange }: { onAuthChange?: () => void 
                 >
                     {loading ? "Conectando..." : "Entrar"}
                 </button>
+                <p className="text-slate-400 text-sm">
+                    Não tem conta?{" "}
+                    <Link
+                        href="/signup"
+                        className="text-emerald-300 hover:text-emerald-200"
+                    >
+                        Cadastre-se
+                    </Link>
+                </p>
             </div>
         </form>
     );

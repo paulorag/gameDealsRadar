@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiUrl, getApiHeaders } from "../lib/api";
 
-export default function AddGameInput() {
+export default function AddGameInput({
+    authenticated,
+}: {
+    authenticated: boolean;
+}) {
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
-    const [authenticated, setAuthenticated] = useState(false);
     const router = useRouter();
-
-    useEffect(() => {
-        setAuthenticated(Boolean(getToken()));
-    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -62,7 +61,7 @@ export default function AddGameInput() {
                 onChange={(e) => setUrl(e.target.value)}
                 disabled={loading || !authenticated}
             />
-            <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="flex flex-col gap-2 sm:flex-row items-center">
                 <button
                     type="submit"
                     disabled={loading || !authenticated}
@@ -71,7 +70,7 @@ export default function AddGameInput() {
                     {loading ? "Adicionando..." : "Rastrear"}
                 </button>
                 {!authenticated && (
-                    <p className="text-yellow-300 text-sm mt-2 sm:mt-0">
+                    <p className="text-yellow-300 text-sm">
                         Faça login para adicionar um jogo.
                     </p>
                 )}

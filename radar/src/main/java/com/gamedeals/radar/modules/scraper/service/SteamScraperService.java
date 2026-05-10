@@ -79,6 +79,10 @@ public class SteamScraperService {
             }
         }
 
+        if (priceElement == null) {
+            priceElement = doc.selectFirst(".game_purchase_price, .discount_final_price");
+        }
+
         BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
 
         Game game = gameRepository.findBySteamAppId(steamAppId)
@@ -102,19 +106,29 @@ public class SteamScraperService {
     }
 
     private BigDecimal cleanPrice(String priceText) {
-        if (priceText == null || priceText.toLowerCase().contains("free")
+        if (priceText == null || priceText.trim().isEmpty()
+                || priceText.toLowerCase().contains("free")
                 || priceText.toLowerCase().contains("gratuito")) {
             return BigDecimal.ZERO;
         }
 
-        String clean = priceText.replaceAll("[^0-9.,]", "");
+        String clean = priceText.replaceAll("[^0-9.,]", "").trim();
+
+        if (clean.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
 
         if (clean.contains(",")) {
             clean = clean.replace(".", "");
             clean = clean.replace(",", ".");
         }
 
-        return new BigDecimal(clean);
+        try {
+            return new BigDecimal(clean);
+        } catch (NumberFormatException e) {
+            log.warn("Não foi possível fazer parse do preço: {}", priceText);
+            return BigDecimal.ZERO;
+        }
     }
 
     private String extractAppIdFromUrl(String url) {
