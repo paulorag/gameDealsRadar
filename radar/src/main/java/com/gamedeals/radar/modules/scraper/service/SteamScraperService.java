@@ -79,6 +79,10 @@ public class SteamScraperService {
             }
         }
 
+        if (priceElement == null) {
+            priceElement = doc.selectFirst(".game_purchase_price, .discount_final_price");
+        }
+
         BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
 
         Game game = gameRepository.findBySteamAppId(steamAppId)

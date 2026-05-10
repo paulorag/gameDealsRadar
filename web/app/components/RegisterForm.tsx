@@ -35,7 +35,7 @@ export default function RegisterForm() {
             const data = await response.json();
             setToken(data.token);
             router.push("/dashboard");
-        } catch (err) {
+        } catch {
             setError("Falha ao conectar com o servidor.");
         } finally {
             setLoading(false);

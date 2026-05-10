@@ -4,8 +4,14 @@ import { useEffect, useState } from "react";
 import PriceChart from "../../components/PriceChart";
 import { getApiUrl, getApiHeaders, getToken } from "../../lib/api";
 
+interface PriceHistoryEntry {
+    id: string;
+    checkDate: string;
+    price: number;
+}
+
 export default function GameHistoryClient({ id }: { id: string }) {
-    const [history, setHistory] = useState<any[]>([]);
+    const [history, setHistory] = useState<PriceHistoryEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -45,7 +51,7 @@ export default function GameHistoryClient({ id }: { id: string }) {
 
                 const data = await response.json();
                 setHistory(data);
-            } catch (err) {
+            } catch {
                 setError("Erro ao conectar com o backend.");
             } finally {
                 setLoading(false);
@@ -88,7 +94,7 @@ export default function GameHistoryClient({ id }: { id: string }) {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-700">
-                        {history.map((item: any) => (
+                        {history.map((item) => (
                             <tr key={item.id} className="hover:bg-slate-700/50">
                                 <td className="px-6 py-4">
                                     {new Date(item.checkDate).toLocaleString(

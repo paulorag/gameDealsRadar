@@ -1,3 +1,4 @@
+import Link from "next/link";
 import GameHistoryClient from "./GameHistoryClient";
 
 export default async function GameDetailsPage({
@@ -13,12 +14,12 @@ export default async function GameDetailsPage({
                 Detalhes do Monitoramento
             </h1>
 
-            <a
+            <Link
                 href="/"
                 className="mb-8 text-slate-400 hover:text-white transition-colors"
             >
                 ← Voltar para Home
-            </a>
+            </Link>
 
             <GameHistoryClient id={id} />
         </main>

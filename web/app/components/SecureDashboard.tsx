@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddGameInput from "./AddGameInput";
 import GameListClient from "./GameListClient";
 import { getToken } from "../lib/api";
 
 export default function SecureDashboard() {
-    const [token, setToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        setToken(getToken());
-    }, []);
+    const [token] = useState<string | null>(() => getToken());
 
     if (!token) {
         return (

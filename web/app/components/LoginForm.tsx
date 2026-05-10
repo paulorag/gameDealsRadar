@@ -51,7 +51,7 @@ export default function LoginForm({
             setPassword("");
             onAuthChange?.();
             router.push("/dashboard");
-        } catch (err) {
+        } catch {
             setError("Falha ao conectar com o servidor.");
         } finally {
             setLoading(false);
