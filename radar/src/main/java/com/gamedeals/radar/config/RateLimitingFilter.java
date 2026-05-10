@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class RateLimitingFilter extends OncePerRequestFilter {
 
-    private static final int MAX_REQUESTS_PER_MINUTE = 10;
+    private static final int MAX_REQUESTS_PER_MINUTE = 100; // Increased from 10 for development
     private static final long TIME_WINDOW_MS = 60 * 1000; // 1 minute
 
     private final ConcurrentHashMap<String, ClientRequestInfo> clientRequests = new ConcurrentHashMap<>();
