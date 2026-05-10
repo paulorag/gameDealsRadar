@@ -22,27 +22,35 @@ export default function AddGameInput({
         const apiUrl = getApiUrl();
 
         try {
-            const res = await fetch(`${getApiUrl()}/games`, {
+            console.log("🔍 Debug: Enviando POST para", `${apiUrl}/games`);
+            console.log("🔍 Debug: Headers:", getApiHeaders());
+            console.log("🔍 Debug: Payload:", { url });
+
+            const res = await fetch(`${apiUrl}/games`, {
                 method: "POST",
                 headers: getApiHeaders(),
                 body: JSON.stringify({ url }),
             });
 
+            console.log("🔍 Debug: POST /games status", res.status);
+
             if (res.ok) {
                 setUrl("");
                 router.refresh();
-            } else if (res.status === 401) {
-                alert(
-                    "Não autorizado. Verifique as credenciais Basic Auth configuradas.",
-                );
             } else {
-                alert(
-                    "Erro ao adicionar jogo. Verifique o link e as configurações do backend.",
-                );
+                const body = await res.text();
+                console.error("🔍 Debug: POST /games erro", res.status, body);
+
+                if (res.status === 401) {
+                    alert("Não autorizado. Faça login novamente.");
+                } else if (res.status === 403) {
+                    alert("Acesso negado. Verifique se você está autenticado corretamente.");
+                } else {
+                    alert(`Erro ao adicionar jogo (${res.status}). ${body}`);
+                }
             }
         } catch (error) {
             console.error("Erro de conexão:", error);
-            const apiUrl = getApiUrl();
             alert(`Falha ao conectar no servidor (${apiUrl}). Verifique se o backend está online.`);
         } finally {
             setLoading(false);
