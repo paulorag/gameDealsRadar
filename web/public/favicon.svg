@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
+  
+  <!-- Game controller base -->
+  <ellipse cx="100" cy="95" rx="50" ry="45" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  
+  <!-- D-Pad left side -->
+  <rect x="35" y="85" width="8" height="30" fill="#10b981" rx="2"/>
+  <rect x="25" y="95" width="30" height="8" fill="#10b981" rx="2"/>
+  
+  <!-- Buttons right side -->
+  <circle cx="155" cy="75" r="6" fill="#06b6d4" stroke="#06b6d4" stroke-width="1"/>
+  <circle cx="175" cy="95" r="6" fill="#ec4899" stroke="#ec4899" stroke-width="1"/>
+  <circle cx="155" cy="115" r="6" fill="#8b5cf6" stroke="#8b5cf6" stroke-width="1"/>
+  <circle cx="135" cy="95" r="6" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"/>
+  
+  <!-- Center radar circle -->
+  <circle cx="100" cy="105" r="12" fill="none" stroke="#10b981" stroke-width="2"/>
+  <circle cx="100" cy="105" r="8" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="100" cy="105" r="4" fill="#10b981"/>
+  
+  <!-- Radar waves -->
+  <path d="M 100 105 Q 105 100 110 105" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+  <path d="M 100 105 Q 90 100 90 110" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+</svg>

@@ -38,7 +38,8 @@ export default function AddGameInput({
             }
         } catch (error) {
             console.error("Erro de conexão:", error);
-            alert("Falha ao conectar com o servidor.");
+            const apiUrl = getApiUrl();
+            alert(`Falha ao conectar no servidor (${apiUrl}). Verifique se o backend está online.`);
         } finally {
             setLoading(false);
         }
