@@ -6,6 +6,7 @@ import com.gamedeals.radar.modules.catalog.domain.PriceHistory;
 import com.gamedeals.radar.modules.catalog.repository.GameRepository;
 import com.gamedeals.radar.modules.catalog.repository.PriceHistoryRepository;
 import com.gamedeals.radar.modules.scraper.service.SteamScraperService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addGame(@RequestBody NewGameRequest request) {
+    public ResponseEntity<Void> addGame(@RequestBody @Valid NewGameRequest request) {
         scraperService.extractAndSaveGame(request.url());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

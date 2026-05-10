@@ -5,6 +5,7 @@ import com.gamedeals.radar.modules.catalog.domain.PriceHistory;
 import com.gamedeals.radar.modules.catalog.repository.GameRepository;
 import com.gamedeals.radar.modules.catalog.repository.PriceHistoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,17 +19,19 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SteamScraperService {
 
     private final GameRepository gameRepository;
     private final PriceHistoryRepository priceHistoryRepository;
 
     public void extractAndSaveGame(String url) {
+        log.info("Iniciando extração de dados para URL: {}", url);
         try {
             String steamAppId = extractAppIdFromUrl(url);
             if (steamAppId == null) {
-                System.err.println("URL inválida, não encontrei o ID: " + url);
-                return;
+                log.warn("URL inválida, não encontrei o ID: {}", url);
+                throw new IllegalArgumentException("URL inválida ou não é de um jogo da Steam");
             }
 
             Document doc = fetchSteamPage(url);
@@ -36,10 +39,11 @@ public class SteamScraperService {
             saveGameData(doc, steamAppId, url);
 
         } catch (IOException e) {
-            System.err.println("Erro de conexão: " + e.getMessage());
+            log.error("Erro de conexão ao acessar URL: {}", url, e);
+            throw new RuntimeException("Erro ao conectar com a Steam", e);
         } catch (Exception e) {
-            System.err.println("Erro inesperado: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Erro inesperado ao processar URL: {}", url, e);
+            throw new RuntimeException("Erro interno ao processar jogo", e);
         }
     }
 
@@ -55,6 +59,8 @@ public class SteamScraperService {
     }
 
     protected void saveGameData(Document doc, String steamAppId, String url) {
+        log.debug("Extraindo dados da página para Steam App ID: {}", steamAppId);
+
         String title = doc.selectFirst("#appHubAppName").text();
         String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
 
@@ -78,6 +84,7 @@ public class SteamScraperService {
         Game game = gameRepository.findBySteamAppId(steamAppId)
                 .orElse(new Game());
 
+        boolean isNew = game.getId() == null;
         game.setSteamAppId(steamAppId);
         game.setTitle(title);
         game.setUrlLink(url);
@@ -91,7 +98,7 @@ public class SteamScraperService {
 
         priceHistoryRepository.save(history);
 
-        System.out.println("✅ Jogo processado: " + title + " | Preço: " + price);
+        log.info("Jogo {} processado: {} | Preço: R$ {}", isNew ? "novo" : "atualizado", title, price);
     }
 
     private BigDecimal cleanPrice(String priceText) {
