@@ -29,23 +29,36 @@ export default function GameListClient({ token }: { token: string | null }) {
             }
 
             try {
+                console.log("🔍 Debug: Tentando buscar jogos");
+                console.log("🔍 Debug: Token presente:", !!token);
+                console.log("🔍 Debug: API URL:", getApiUrl());
+                console.log("🔍 Debug: Headers:", getApiHeaders());
+
                 const response = await fetch(`${getApiUrl()}/games`, {
                     cache: "no-store",
                     headers: getApiHeaders(),
                 });
 
+                console.log("🔍 Debug: Response status:", response.status);
+                console.log("🔍 Debug: Response headers:", Object.fromEntries(response.headers.entries()));
+
                 if (!response.ok) {
+                    const responseText = await response.text();
+                    console.log("🔍 Debug: Response body:", responseText);
+
                     if (response.status === 401) {
                         setError("Não autorizado. Faça login novamente.");
                     } else {
-                        setError("Falha ao buscar jogos.");
+                        setError(`Falha ao buscar jogos. Status: ${response.status}`);
                     }
                     return;
                 }
 
                 const data = await response.json();
+                console.log("🔍 Debug: Dados recebidos:", data);
                 setGames(data);
-            } catch {
+            } catch (error) {
+                console.error("🔍 Debug: Erro na requisição:", error);
                 setError("Erro ao conectar com o backend.");
             } finally {
                 setLoading(false);
