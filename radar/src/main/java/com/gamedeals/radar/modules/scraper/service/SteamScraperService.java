@@ -106,14 +106,14 @@ public class SteamScraperService {
     }
 
     private BigDecimal cleanPrice(String priceText) {
-        if (priceText == null || priceText.trim().isEmpty() 
+        if (priceText == null || priceText.trim().isEmpty()
                 || priceText.toLowerCase().contains("free")
                 || priceText.toLowerCase().contains("gratuito")) {
             return BigDecimal.ZERO;
         }
 
         String clean = priceText.replaceAll("[^0-9.,]", "").trim();
-        
+
         if (clean.isEmpty()) {
             return BigDecimal.ZERO;
         }
