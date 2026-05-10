@@ -3,6 +3,7 @@ package com.gamedeals.radar.modules.catalog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamedeals.radar.modules.catalog.controller.dto.NewGameRequest;
 import com.gamedeals.radar.modules.catalog.domain.Game;
+import com.gamedeals.radar.modules.catalog.domain.PriceHistory;
 import com.gamedeals.radar.modules.catalog.repository.GameRepository;
 import com.gamedeals.radar.modules.catalog.repository.PriceHistoryRepository;
 import com.gamedeals.radar.modules.scraper.service.SteamScraperService;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,8 +79,18 @@ class GameControllerTest {
     @Test
     @DisplayName("GET /games/{id}/history - Should return price history")
     void shouldReturnGameHistory() throws Exception {
-        mockMvc.perform(get("/games/550e8400-e29b-41d4-a716-446655440000/history")
+        UUID gameId = UUID.randomUUID();
+
+        PriceHistory history = new PriceHistory();
+        history.setPrice(new BigDecimal("100.00"));
+        history.setCheckDate(Instant.now());
+
+        when(priceHistoryRepository.findAllByGameIdOrderByCheckDateDesc(gameId))
+                .thenReturn(List.of(history));
+
+        mockMvc.perform(get("/games/{id}/history", gameId)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].price").value(100.00));
     }
 }
