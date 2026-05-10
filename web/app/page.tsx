@@ -1,15 +1,22 @@
 import { Suspense } from "react";
 import AddGameInput from "./components/AddGameInput";
 import Link from "next/link";
+import { getApiUrl, getApiHeaders } from "./lib/api";
 
 async function GameList() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    const apiUrl = getApiUrl();
     try {
         const res = await fetch(`${apiUrl}/games`, {
             cache: "no-store",
+            headers: getApiHeaders(),
         });
 
         if (!res.ok) {
+            if (res.status === 401) {
+                throw new Error(
+                    "Não autorizado. Verifique as credenciais Basic Auth no frontend.",
+                );
+            }
             throw new Error("Falha ao buscar jogos");
         }
 
@@ -56,10 +63,20 @@ async function GameList() {
                 ))}
             </div>
         );
-    } catch (error) {
+    } catch (error: any) {
         return (
             <div className="p-4 border border-red-500 bg-red-500/10 rounded text-red-200">
-                Erro ao conectar com o Backend. O Java está rodando?
+                {error.message.includes("Não autorizado") ? (
+                    <>
+                        <p>
+                            Não autorizado. Verifique suas credenciais Basic
+                            Auth.
+                        </p>
+                        <p>Use as variáveis de ambiente do frontend.</p>
+                    </>
+                ) : (
+                    <p>Erro ao conectar com o Backend. O Java está rodando?</p>
+                )}
             </div>
         );
     }

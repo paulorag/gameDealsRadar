@@ -20,16 +20,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/actuator/**").permitAll() // Para health checks
-                .anyRequest().authenticated()
-            )
-            .httpBasic(httpBasic -> {})
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .addFilterBefore(rateLimitingFilter, org.springframework.security.web.authentication.www.BasicAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/actuator/**").permitAll() // Para health checks
+                        .anyRequest().authenticated())
+                .httpBasic(httpBasic -> {
+                })
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(rateLimitingFilter,
+                        org.springframework.security.web.authentication.www.BasicAuthenticationFilter.class);
 
         return http.build();
     }
@@ -37,10 +37,10 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("password"))
-            .roles("USER")
-            .build();
+                .username("admin")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER")
+                .build();
 
         return new InMemoryUserDetailsManager(user);
     }

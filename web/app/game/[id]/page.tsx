@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import PriceChart from "../../components/PriceChart";
+import { getApiUrl, getApiHeaders } from "../../lib/api";
 
 async function GameHistory({ id }: { id: string }) {
     try {
-        const apiUrl =
-            process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+        const apiUrl = getApiUrl();
 
         const res = await fetch(`${apiUrl}/games/${id}/history`, {
             cache: "no-store",
+            headers: getApiHeaders(),
         });
 
         const history = await res.json();
@@ -57,8 +58,12 @@ async function GameHistory({ id }: { id: string }) {
                 </div>
             </div>
         );
-    } catch (error) {
-        return <p className="text-red-400">Erro ao carregar histórico!</p>;
+    } catch (error: any) {
+        const message =
+            error?.message && error.message.includes("Não autorizado")
+                ? "Não autorizado. Verifique as credenciais Basic Auth do frontend."
+                : "Erro ao carregar histórico!";
+        return <p className="text-red-400">{message}</p>;
     }
 }
 

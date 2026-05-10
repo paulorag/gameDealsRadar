@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getApiUrl, getApiHeaders } from "../lib/api";
 
 export default function AddGameInput() {
     const [url, setUrl] = useState("");
@@ -14,22 +15,25 @@ export default function AddGameInput() {
 
         setLoading(true);
 
-        const apiUrl =
-            process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+        const apiUrl = getApiUrl();
 
         try {
             const res = await fetch(`${apiUrl}/games`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: getApiHeaders(),
                 body: JSON.stringify({ url }),
             });
 
             if (res.ok) {
                 setUrl("");
                 router.refresh();
+            } else if (res.status === 401) {
+                alert(
+                    "Não autorizado. Verifique as credenciais Basic Auth configuradas.",
+                );
             } else {
                 alert(
-                    "Erro ao adicionar jogo. Verifique o link ou o console do Backend."
+                    "Erro ao adicionar jogo. Verifique o link e as configurações do backend.",
                 );
             }
         } catch (error) {
