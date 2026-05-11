@@ -3,35 +3,36 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Game Deals Radar - Rastreador de Ofertas de Jogos",
-  description: "Encontre e rastreie as melhores ofertas de jogos com integração Steam. Painel seguro com autenticação JWT.",
-  icons: {
-    icon: "/favicon.svg",
-  },
+    title: "Game Deals Radar - Rastreador de Ofertas de Jogos",
+    description:
+        "Encontre e rastreie as melhores ofertas de jogos com integração Steam. Painel seguro com autenticação JWT.",
+    icons: {
+        icon: "/favicon.svg",
+    },
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-slate-100`}
+            >
+                {children}
+            </body>
+        </html>
+    );
 }

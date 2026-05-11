@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface PriceHistoryRepository extends JpaRepository<PriceHistory, UUID> {
     List<PriceHistory> findAllByGameIdOrderByCheckDateDesc(UUID gameId);
+
+    void deleteAllByGameId(UUID gameId);
 }
