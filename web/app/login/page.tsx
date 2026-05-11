@@ -3,7 +3,7 @@ import LoginForm from "../components/LoginForm";
 export default function LoginPage() {
     return (
         <main className="min-h-screen flex items-center justify-center bg-slate-950 text-white p-8">
-            <div className="w-full max-w-3xl">
+            <div className="w-full max-w-2xl mx-auto">
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
                         Login
@@ -13,7 +13,9 @@ export default function LoginPage() {
                         jogos.
                     </p>
                 </div>
-                <LoginForm />
+                <div className="rounded-[32px] border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-slate-950/40">
+                    <LoginForm />
+                </div>
             </div>
         </main>
     );

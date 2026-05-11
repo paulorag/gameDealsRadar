@@ -109,11 +109,11 @@ export default function GameListClient({
                     para começar.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     {games.map((game) => (
                         <div
                             key={game.id}
-                            className="bg-slate-800 border border-slate-700 p-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transition-all"
+                            className="flex h-full flex-col justify-between rounded-3xl border border-slate-700 bg-slate-800 p-4 shadow-lg shadow-slate-950/20 transition hover:shadow-emerald-500/20"
                         >
                             {game.imageUrl ? (
                                 <div className="relative w-full h-48 rounded mb-4 overflow-hidden">
@@ -137,7 +137,7 @@ export default function GameListClient({
                                 {game.title}
                             </h2>
 
-                            <div className="flex flex-col gap-3 mt-4">
+                            <div className="flex flex-col gap-4 mt-4 flex-1">
                                 <div className="flex items-center justify-between gap-4">
                                     <span className="text-sm text-slate-400">
                                         ID Steam: {game.steamAppId}

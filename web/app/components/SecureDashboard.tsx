@@ -48,7 +48,7 @@ export default function SecureDashboard() {
 
     return (
         <div className="w-full flex flex-col items-center gap-8">
-            <section className="w-full rounded-[32px] border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 backdrop-blur-xl">
+            <section className="w-full max-w-7xl rounded-[32px] border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 backdrop-blur-xl">
                 <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                     <div>
                         <p className="text-sm uppercase tracking-[0.3em] text-emerald-400/80">
