@@ -10,11 +10,21 @@ export function getToken() {
         return null;
     }
 
-    return localStorage.getItem(TOKEN_STORAGE_KEY);
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token || token === "null" || token === "undefined") {
+        return null;
+    }
+
+    return token;
 }
 
 export function setToken(token: string) {
     if (typeof window === "undefined") {
+        return;
+    }
+
+    if (!token || token === "null" || token === "undefined") {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
         return;
     }
 
