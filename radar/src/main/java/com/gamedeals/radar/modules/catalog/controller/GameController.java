@@ -8,6 +8,8 @@ import com.gamedeals.radar.modules.catalog.repository.PriceHistoryRepository;
 import com.gamedeals.radar.modules.scraper.service.SteamScraperService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +27,13 @@ public class GameController {
     private final PriceHistoryRepository priceHistoryRepository;
 
     @GetMapping
+    @Cacheable("games")
     public ResponseEntity<List<Game>> findAll() {
         return ResponseEntity.ok(gameRepository.findAll());
     }
 
     @PostMapping
+    @CacheEvict(value = "games", allEntries = true)
     public ResponseEntity<Void> addGame(@RequestBody @Valid NewGameRequest request) {
         scraperService.extractAndSaveGame(request.url());
 
@@ -37,6 +41,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}/history")
+    @Cacheable(value = "gameHistory", key = "#id")
     public ResponseEntity<List<PriceHistory>> getGameHistory(@PathVariable UUID id) {
         List<PriceHistory> history = priceHistoryRepository.findAllByGameIdOrderByCheckDateDesc(id);
 
