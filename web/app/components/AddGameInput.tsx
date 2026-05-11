@@ -45,14 +45,18 @@ export default function AddGameInput({
                 if (res.status === 401) {
                     alert("Não autorizado. Faça login novamente.");
                 } else if (res.status === 403) {
-                    alert("Acesso negado. Verifique se você está autenticado corretamente.");
+                    alert(
+                        "Acesso negado. Verifique se você está autenticado corretamente.",
+                    );
                 } else {
                     alert(`Erro ao adicionar jogo (${res.status}). ${body}`);
                 }
             }
         } catch (error) {
             console.error("Erro de conexão:", error);
-            alert(`Falha ao conectar no servidor (${apiUrl}). Verifique se o backend está online.`);
+            alert(
+                `Falha ao conectar no servidor (${apiUrl}). Verifique se o backend está online.`,
+            );
         } finally {
             setLoading(false);
         }

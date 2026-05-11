@@ -2,15 +2,18 @@ import SecureDashboard from "../components/SecureDashboard";
 
 export default function DashboardPage() {
     return (
-        <main className="min-h-screen bg-slate-950 text-white p-8 flex items-center justify-center">
-            <div className="w-full max-w-5xl">
-                <header className="mb-8">
-                    <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
-                        Painel de Rastreamento
+        <main className="min-h-screen bg-slate-950 p-8">
+            <div className="mx-auto w-full max-w-6xl">
+                <header className="mb-10 text-center">
+                    <p className="text-sm uppercase tracking-[0.35em] text-emerald-400/80">
+                        Dashboard
+                    </p>
+                    <h1 className="mt-4 text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+                        Seu radar de ofertas Steam
                     </h1>
-                    <p className="mt-2 text-slate-300">
-                        Adicione jogos, visualize sua lista e acompanhe
-                        histórico de preços.
+                    <p className="mt-4 text-slate-400 max-w-3xl mx-auto leading-7">
+                        Adicione jogos, acompanhe o histórico de preços e
+                        mantenha seu portfólio de ofertas sempre sob controle.
                     </p>
                 </header>
                 <SecureDashboard />

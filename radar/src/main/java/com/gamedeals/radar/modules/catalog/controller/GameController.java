@@ -40,6 +40,15 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @DeleteMapping("/{id}")
+    @CacheEvict(value = { "games", "gameHistory" }, allEntries = true)
+    public ResponseEntity<Void> deleteGame(@PathVariable UUID id) {
+        priceHistoryRepository.deleteAllByGameId(id);
+        gameRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{id}/history")
     @Cacheable(value = "gameHistory", key = "#id")
     public ResponseEntity<List<PriceHistory>> getGameHistory(@PathVariable UUID id) {
