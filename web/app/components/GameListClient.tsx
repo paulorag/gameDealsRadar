@@ -109,107 +109,106 @@ export default function GameListClient({
                     para começar.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
                     {games.map((game) => (
                         <div
                             key={game.id}
-                            className="flex h-full flex-col justify-between rounded-3xl border border-slate-700 bg-slate-800 p-4 shadow-lg shadow-slate-950/20 transition hover:shadow-emerald-500/20"
+                            className="group flex h-full flex-col justify-between rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-5 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
                         >
                             {game.imageUrl ? (
-                                <div className="relative w-full h-48 rounded mb-4 overflow-hidden">
+                                <div className="relative w-full h-56 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
                                     <Image
                                         src={game.imageUrl}
                                         alt={game.title}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover group-hover:scale-105 transition duration-300"
                                     />
                                 </div>
                             ) : (
-                                <div className="w-full h-48 bg-slate-700 rounded mb-4 flex items-center justify-center text-slate-500">
+                                <div className="w-full h-56 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
                                     Sem Imagem
                                 </div>
                             )}
 
                             <h2
-                                className="text-xl font-bold text-white mb-2 truncate"
+                                className="text-lg font-bold text-white mb-3 truncate leading-tight group-hover:text-emerald-300 transition"
                                 title={game.title}
                             >
                                 {game.title}
                             </h2>
 
-                            <div className="flex flex-col gap-4 mt-4 flex-1">
-                                <div className="flex items-center justify-between gap-4">
-                                    <span className="text-sm text-slate-400">
-                                        ID Steam: {game.steamAppId}
-                                    </span>
-                                    <div className="flex items-center gap-3">
-                                        <Link
-                                            href={`/game/${game.id}`}
-                                            className="text-emerald-400 font-bold border border-emerald-400 px-3 py-1 rounded hover:bg-emerald-400/10 transition-colors"
-                                        >
-                                            Ver Detalhes
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            onClick={async () => {
-                                                const confirmed =
-                                                    window.confirm(
-                                                        `Deseja remover ${game.title} da sua lista?`,
+                            <div className="flex flex-col gap-4 mt-auto pt-3 border-t border-slate-700/50">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs uppercase tracking-wider text-slate-500">ID Steam:</span>
+                                    <span className="text-sm font-mono text-emerald-400">{game.steamAppId}</span>
+                                </div>
+                                <div className="flex gap-2 pt-2">
+                                    <Link
+                                        href={`/game/${game.id}`}
+                                        className="flex-1 text-center py-2.5 text-sm font-semibold text-emerald-300 border border-emerald-400/50 rounded-xl bg-emerald-400/5 hover:bg-emerald-400/15 hover:border-emerald-400 transition"
+                                    >
+                                        Detalhes
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            const confirmed =
+                                                window.confirm(
+                                                    `Deseja remover ${game.title} da sua lista?`,
+                                                );
+                                            if (!confirmed) {
+                                                return;
+                                            }
+
+                                            try {
+                                                const response =
+                                                    await fetch(
+                                                        `${getApiUrl()}/games/${game.id}`,
+                                                        {
+                                                            method: "DELETE",
+                                                            headers:
+                                                                getApiHeaders(),
+                                                        },
                                                     );
-                                                if (!confirmed) {
+
+                                                if (!response.ok) {
+                                                    const text =
+                                                        await response.text();
+                                                    setError(
+                                                        `Falha ao remover jogo: ${response.status}`,
+                                                    );
+                                                    console.error(
+                                                        "Erro ao deletar jogo:",
+                                                        text,
+                                                    );
                                                     return;
                                                 }
 
-                                                try {
-                                                    const response =
-                                                        await fetch(
-                                                            `${getApiUrl()}/games/${game.id}`,
-                                                            {
-                                                                method: "DELETE",
-                                                                headers:
-                                                                    getApiHeaders(),
-                                                            },
-                                                        );
-
-                                                    if (!response.ok) {
-                                                        const text =
-                                                            await response.text();
-                                                        setError(
-                                                            `Falha ao remover jogo: ${response.status}`,
-                                                        );
-                                                        console.error(
-                                                            "Erro ao deletar jogo:",
-                                                            text,
-                                                        );
-                                                        return;
-                                                    }
-
-                                                    setGames((current) =>
-                                                        current.filter(
-                                                            (item) =>
-                                                                item.id !==
-                                                                game.id,
-                                                        ),
-                                                    );
-                                                    setMessage(
-                                                        "Jogo removido com sucesso.",
-                                                    );
-                                                    onGameDeleted?.();
-                                                } catch (deleteError) {
-                                                    console.error(
-                                                        "Erro ao deletar jogo:",
-                                                        deleteError,
-                                                    );
-                                                    setError(
-                                                        "Erro ao conectar com o backend.",
-                                                    );
-                                                }
-                                            }}
-                                            className="text-red-400 border border-red-400 px-3 py-1 rounded hover:bg-red-400/10 transition-colors"
-                                        >
-                                            Excluir
-                                        </button>
-                                    </div>
+                                                setGames((current) =>
+                                                    current.filter(
+                                                        (item) =>
+                                                            item.id !==
+                                                            game.id,
+                                                    ),
+                                                );
+                                                setMessage(
+                                                    "Jogo removido com sucesso.",
+                                                );
+                                                onGameDeleted?.();
+                                            } catch (deleteError) {
+                                                console.error(
+                                                    "Erro ao deletar jogo:",
+                                                    deleteError,
+                                                );
+                                                setError(
+                                                    "Erro ao conectar com o backend.",
+                                                );
+                                            }
+                                        }}
+                                        className="flex-1 py-2.5 text-sm font-semibold text-red-300 border border-red-400/50 rounded-xl bg-red-400/5 hover:bg-red-400/15 hover:border-red-400 transition"
+                                    >
+                                        Excluir
+                                    </button>
                                 </div>
                             </div>
                         </div>
