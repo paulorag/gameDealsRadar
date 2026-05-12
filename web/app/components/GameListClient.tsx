@@ -37,17 +37,22 @@ export default function GameListClient({
         setError(null);
 
         try {
-            const response = await fetch(`${getApiUrl()}/games/${gameToDelete.id}`, {
-                method: "DELETE",
-                headers: getApiHeaders(),
-            });
+            const response = await fetch(
+                `${getApiUrl()}/games/${gameToDelete.id}`,
+                {
+                    method: "DELETE",
+                    headers: getApiHeaders(),
+                },
+            );
 
             if (!response.ok) {
                 setError(`Falha ao remover jogo: ${response.status}`);
                 return;
             }
 
-            setGames((current) => current.filter((item) => item.id !== gameToDelete.id));
+            setGames((current) =>
+                current.filter((item) => item.id !== gameToDelete.id),
+            );
             setMessage("Jogo removido com sucesso.");
             onGameDeleted?.();
             setGameToDelete(null);
@@ -165,8 +170,15 @@ export default function GameListClient({
                                     </span>
                                 </div>
                                 <div className="flex gap-2 pt-2">
-                                    <Link href={`/game/${game.id}`} className="flex-1">
-                                        <Button type="button" variant="primary" className="w-full">
+                                    <Link
+                                        href={`/game/${game.id}`}
+                                        className="flex-1"
+                                    >
+                                        <Button
+                                            type="button"
+                                            variant="primary"
+                                            className="w-full"
+                                        >
                                             Detalhes
                                         </Button>
                                     </Link>

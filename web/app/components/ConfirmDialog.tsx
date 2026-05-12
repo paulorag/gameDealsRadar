@@ -32,7 +32,9 @@ export default function ConfirmDialog({
             <div className="relative w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6 shadow-2xl shadow-black/40">
                 <div className="mb-4">
                     <h3 className="text-xl font-bold text-white">{title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">{description}</p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                        {description}
+                    </p>
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                     <button
