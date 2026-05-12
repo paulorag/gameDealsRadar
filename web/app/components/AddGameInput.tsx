@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { getApiUrl, getApiHeaders } from "../lib/api";
+import { useNotification } from "../hooks/useNotification";
 
 export default function AddGameInput({
     authenticated,
@@ -13,6 +13,7 @@ export default function AddGameInput({
 }) {
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
+    const { success, error } = useNotification();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,39 +24,38 @@ export default function AddGameInput({
         const apiUrl = getApiUrl();
 
         try {
-            console.log("🔍 Debug: Enviando POST para", `${apiUrl}/games`);
-            console.log("🔍 Debug: Headers:", getApiHeaders());
-            console.log("🔍 Debug: Payload:", { url });
-
             const res = await fetch(`${apiUrl}/games`, {
                 method: "POST",
                 headers: getApiHeaders(),
                 body: JSON.stringify({ url }),
             });
 
-            console.log("🔍 Debug: POST /games status", res.status);
-
             if (res.ok) {
                 setUrl("");
+                success(
+                    "Jogo adicionado!",
+                    "O jogo foi adicionado ao seu radar.",
+                );
                 onGameAdded?.();
             } else {
-                const body = await res.text();
-                console.error("🔍 Debug: POST /games erro", res.status, body);
+                const statusMessages: Record<number, string> = {
+                    401: "Não autorizado. Faça login novamente.",
+                    403: "Acesso negado. Verifique sua autenticação.",
+                    400: "URL inválida. Verifique o link da Steam.",
+                    409: "Este jogo já está no seu radar.",
+                    500: "Erro no servidor. Tente novamente mais tarde.",
+                };
 
-                if (res.status === 401) {
-                    alert("Não autorizado. Faça login novamente.");
-                } else if (res.status === 403) {
-                    alert(
-                        "Acesso negado. Verifique se você está autenticado corretamente.",
-                    );
-                } else {
-                    alert(`Erro ao adicionar jogo (${res.status}). ${body}`);
-                }
+                error(
+                    "Erro ao adicionar jogo",
+                    statusMessages[res.status] ||
+                        `Erro ${res.status}. Tente novamente.`,
+                );
             }
-        } catch (error) {
-            console.error("Erro de conexão:", error);
-            alert(
-                `Falha ao conectar no servidor (${apiUrl}). Verifique se o backend está online.`,
+        } catch {
+            error(
+                "Falha na conexão",
+                `Não foi possível conectar ao servidor. Verifique sua internet.`,
             );
         } finally {
             setLoading(false);

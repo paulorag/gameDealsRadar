@@ -38,42 +38,28 @@ export default function GameListClient({
             }
 
             try {
-                console.log("🔍 Debug: Tentando buscar jogos");
-                console.log("🔍 Debug: Token presente:", !!token);
-                console.log("🔍 Debug: API URL:", getApiUrl());
-                console.log("🔍 Debug: Headers:", getApiHeaders());
-
                 const response = await fetch(`${getApiUrl()}/games`, {
                     cache: "no-store",
                     headers: getApiHeaders(),
                 });
 
-                console.log("🔍 Debug: Response status:", response.status);
-                console.log(
-                    "🔍 Debug: Response headers:",
-                    Object.fromEntries(response.headers.entries()),
-                );
-
                 if (!response.ok) {
-                    const responseText = await response.text();
-                    console.log("🔍 Debug: Response body:", responseText);
-
                     if (response.status === 401) {
                         setError("Não autorizado. Faça login novamente.");
                     } else {
                         setError(
-                            `Falha ao buscar jogos. Status: ${response.status}`,
+                            `Falha ao buscar jogos (${response.status}). Tente novamente.`,
                         );
                     }
                     return;
                 }
 
                 const data = await response.json();
-                console.log("🔍 Debug: Dados recebidos:", data);
                 setGames(data);
-            } catch (error) {
-                console.error("🔍 Debug: Erro na requisição:", error);
-                setError("Erro ao conectar com o backend.");
+            } catch {
+                setError(
+                    "Erro ao conectar com o backend. Verifique sua internet.",
+                );
             } finally {
                 setLoading(false);
             }
@@ -139,8 +125,12 @@ export default function GameListClient({
 
                             <div className="flex flex-col gap-4 mt-auto pt-3 border-t border-slate-700/50">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs uppercase tracking-wider text-slate-500">ID Steam:</span>
-                                    <span className="text-sm font-mono text-emerald-400">{game.steamAppId}</span>
+                                    <span className="text-xs uppercase tracking-wider text-slate-500">
+                                        ID Steam:
+                                    </span>
+                                    <span className="text-sm font-mono text-emerald-400">
+                                        {game.steamAppId}
+                                    </span>
                                 </div>
                                 <div className="flex gap-2 pt-2">
                                     <Link
@@ -152,24 +142,22 @@ export default function GameListClient({
                                     <button
                                         type="button"
                                         onClick={async () => {
-                                            const confirmed =
-                                                window.confirm(
-                                                    `Deseja remover ${game.title} da sua lista?`,
-                                                );
+                                            const confirmed = window.confirm(
+                                                `Deseja remover ${game.title} da sua lista?`,
+                                            );
                                             if (!confirmed) {
                                                 return;
                                             }
 
                                             try {
-                                                const response =
-                                                    await fetch(
-                                                        `${getApiUrl()}/games/${game.id}`,
-                                                        {
-                                                            method: "DELETE",
-                                                            headers:
-                                                                getApiHeaders(),
-                                                        },
-                                                    );
+                                                const response = await fetch(
+                                                    `${getApiUrl()}/games/${game.id}`,
+                                                    {
+                                                        method: "DELETE",
+                                                        headers:
+                                                            getApiHeaders(),
+                                                    },
+                                                );
 
                                                 if (!response.ok) {
                                                     const text =
@@ -177,18 +165,13 @@ export default function GameListClient({
                                                     setError(
                                                         `Falha ao remover jogo: ${response.status}`,
                                                     );
-                                                    console.error(
-                                                        "Erro ao deletar jogo:",
-                                                        text,
-                                                    );
                                                     return;
                                                 }
 
                                                 setGames((current) =>
                                                     current.filter(
                                                         (item) =>
-                                                            item.id !==
-                                                            game.id,
+                                                            item.id !== game.id,
                                                     ),
                                                 );
                                                 setMessage(
@@ -196,10 +179,6 @@ export default function GameListClient({
                                                 );
                                                 onGameDeleted?.();
                                             } catch (deleteError) {
-                                                console.error(
-                                                    "Erro ao deletar jogo:",
-                                                    deleteError,
-                                                );
                                                 setError(
                                                     "Erro ao conectar com o backend.",
                                                 );
