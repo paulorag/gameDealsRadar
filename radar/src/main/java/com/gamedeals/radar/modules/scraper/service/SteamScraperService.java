@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,11 +97,21 @@ public class SteamScraperService {
 
         gameRepository.save(game);
 
-        PriceHistory history = new PriceHistory();
-        history.setGame(game);
-        history.setPrice(price);
+        Optional<PriceHistory> latestPrice = priceHistoryRepository.findFirstByGameOrderByCheckDateDesc(game);
+        if (latestPrice.isEmpty() || latestPrice.get().getPrice().compareTo(price) != 0) {
+            PriceHistory history = new PriceHistory();
+            history.setGame(game);
+            history.setPrice(price);
+            priceHistoryRepository.save(history);
 
-        priceHistoryRepository.save(history);
+            if (latestPrice.isEmpty()) {
+                log.info("Histórico inicial criado para {}: preço R$ {}", title, price);
+            } else {
+                log.info("Histórico atualizado para {}: preço alterado para R$ {}", title, price);
+            }
+        } else {
+            log.info("Preço inalterado para {}. Nenhum novo histórico registrado.", title);
+        }
 
         log.info("Jogo {} processado: {} | Preço: R$ {}", isNew ? "novo" : "atualizado", title, price);
     }

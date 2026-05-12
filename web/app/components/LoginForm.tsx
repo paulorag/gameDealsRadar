@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiUrl, getToken, removeToken, setToken } from "../lib/api";
+import Button from "./Button";
+import { useNotification } from "../hooks/useNotification";
 
 export default function LoginForm({
     onAuthChange,
@@ -13,9 +15,9 @@ export default function LoginForm({
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
     const [token, setLocalToken] = useState<string | null>(null);
     const router = useRouter();
+    const { success, error } = useNotification();
 
     useEffect(() => {
         setLocalToken(getToken());
@@ -23,7 +25,6 @@ export default function LoginForm({
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
-        setError("");
         setLoading(true);
 
         try {
@@ -40,7 +41,7 @@ export default function LoginForm({
                     response.status === 401
                         ? "Credenciais inválidas."
                         : "Falha ao autenticar.";
-                setError(message);
+                error("Erro ao fazer login", message);
                 return;
             }
 
@@ -49,10 +50,11 @@ export default function LoginForm({
             setLocalToken(data.token);
             setUsername("");
             setPassword("");
+            success("Bem-vindo!", "Você foi autenticado com sucesso.");
             onAuthChange?.();
             router.push("/dashboard");
         } catch {
-            setError("Falha ao conectar com o servidor.");
+            error("Falha na conexão", "Não foi possível conectar ao servidor.");
         } finally {
             setLoading(false);
         }
@@ -70,19 +72,19 @@ export default function LoginForm({
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-slate-200">Já está autenticado.</p>
                     <div className="flex gap-3">
-                        <Link
-                            href="/dashboard"
-                            className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold px-4 py-2 rounded"
-                        >
-                            Abrir painel
+                        <Link href="/dashboard" className="flex-1">
+                            <Button type="button" variant="secondary" className="w-full">
+                                Abrir painel
+                            </Button>
                         </Link>
-                        <button
+                        <Button
                             type="button"
+                            variant="danger"
                             onClick={handleLogout}
-                            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded"
+                            className="w-full"
                         >
                             Logout
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -110,23 +112,24 @@ export default function LoginForm({
                     placeholder="Senha"
                     className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500"
                 />
-                {error && <p className="text-red-400">{error}</p>}
-                <button
+                <Button
                     type="submit"
                     disabled={loading}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded transition-colors disabled:opacity-50"
+                    variant="primary"
+                    className="w-full"
                 >
                     {loading ? "Conectando..." : "Entrar"}
-                </button>
-                <p className="text-slate-400 text-sm">
-                    Não tem conta?{" "}
-                    <Link
-                        href="/signup"
-                        className="text-emerald-300 hover:text-emerald-200"
-                    >
-                        Cadastre-se
+                </Button>
+                <div className="flex flex-col gap-2 text-center">
+                    <p className="text-slate-400 text-sm">
+                        Não tem conta?
+                    </p>
+                    <Link href="/signup" className="mx-auto">
+                        <Button type="button" variant="secondary">
+                            Cadastre-se
+                        </Button>
                     </Link>
-                </p>
+                </div>
             </div>
         </form>
     );

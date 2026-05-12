@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getApiUrl, getApiHeaders } from "../lib/api";
+import Button from "./Button";
+import ConfirmDialog from "./ConfirmDialog";
+import { useNotification } from "../hooks/useNotification";
 
 interface GameDto {
     id: string;
@@ -24,7 +27,42 @@ export default function GameListClient({
     const [games, setGames] = useState<GameDto[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
+    const [gameToDelete, setGameToDelete] = useState<GameDto | null>(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const { success, error: notifyError } = useNotification();
+
+    const handleConfirmDelete = async () => {
+        if (!gameToDelete) return;
+
+        setDeleteLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(
+                `${getApiUrl()}/games/${gameToDelete.id}`,
+                {
+                    method: "DELETE",
+                    headers: getApiHeaders(),
+                },
+            );
+
+            if (!response.ok) {
+                setError(`Falha ao remover jogo: ${response.status}`);
+                return;
+            }
+
+            setGames((current) =>
+                current.filter((item) => item.id !== gameToDelete.id),
+            );
+            success("Jogo removido", "Removido com sucesso do seu radar.");
+            onGameDeleted?.();
+            setGameToDelete(null);
+        } catch {
+            notifyError("Erro ao remover", "Não foi possível conectar ao backend.");
+        } finally {
+            setDeleteLoading(false);
+        }
+    };
 
     useEffect(() => {
         async function loadGames() {
@@ -38,42 +76,28 @@ export default function GameListClient({
             }
 
             try {
-                console.log("🔍 Debug: Tentando buscar jogos");
-                console.log("🔍 Debug: Token presente:", !!token);
-                console.log("🔍 Debug: API URL:", getApiUrl());
-                console.log("🔍 Debug: Headers:", getApiHeaders());
-
                 const response = await fetch(`${getApiUrl()}/games`, {
                     cache: "no-store",
                     headers: getApiHeaders(),
                 });
 
-                console.log("🔍 Debug: Response status:", response.status);
-                console.log(
-                    "🔍 Debug: Response headers:",
-                    Object.fromEntries(response.headers.entries()),
-                );
-
                 if (!response.ok) {
-                    const responseText = await response.text();
-                    console.log("🔍 Debug: Response body:", responseText);
-
                     if (response.status === 401) {
                         setError("Não autorizado. Faça login novamente.");
                     } else {
                         setError(
-                            `Falha ao buscar jogos. Status: ${response.status}`,
+                            `Falha ao buscar jogos (${response.status}). Tente novamente.`,
                         );
                     }
                     return;
                 }
 
                 const data = await response.json();
-                console.log("🔍 Debug: Dados recebidos:", data);
                 setGames(data);
-            } catch (error) {
-                console.error("🔍 Debug: Erro na requisição:", error);
-                setError("Erro ao conectar com o backend.");
+            } catch {
+                setError(
+                    "Erro ao conectar com o backend. Verifique sua internet.",
+                );
             } finally {
                 setLoading(false);
             }
@@ -98,11 +122,6 @@ export default function GameListClient({
 
     return (
         <div className="w-full max-w-5xl">
-            {message && (
-                <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">
-                    {message}
-                </div>
-            )}
             {games.length === 0 ? (
                 <div className="rounded-3xl border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
                     Ainda não há jogos no seu radar. Adicione um link da Steam
@@ -139,82 +158,54 @@ export default function GameListClient({
 
                             <div className="flex flex-col gap-4 mt-auto pt-3 border-t border-slate-700/50">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs uppercase tracking-wider text-slate-500">ID Steam:</span>
-                                    <span className="text-sm font-mono text-emerald-400">{game.steamAppId}</span>
+                                    <span className="text-xs uppercase tracking-wider text-slate-500">
+                                        ID Steam:
+                                    </span>
+                                    <span className="text-sm font-mono text-emerald-400">
+                                        {game.steamAppId}
+                                    </span>
                                 </div>
                                 <div className="flex gap-2 pt-2">
                                     <Link
                                         href={`/game/${game.id}`}
-                                        className="flex-1 text-center py-2.5 text-sm font-semibold text-emerald-300 border border-emerald-400/50 rounded-xl bg-emerald-400/5 hover:bg-emerald-400/15 hover:border-emerald-400 transition"
+                                        className="flex-1"
                                     >
-                                        Detalhes
+                                        <Button
+                                            type="button"
+                                            variant="primary"
+                                            className="w-full"
+                                        >
+                                            Detalhes
+                                        </Button>
                                     </Link>
-                                    <button
+                                    <Button
                                         type="button"
-                                        onClick={async () => {
-                                            const confirmed =
-                                                window.confirm(
-                                                    `Deseja remover ${game.title} da sua lista?`,
-                                                );
-                                            if (!confirmed) {
-                                                return;
-                                            }
-
-                                            try {
-                                                const response =
-                                                    await fetch(
-                                                        `${getApiUrl()}/games/${game.id}`,
-                                                        {
-                                                            method: "DELETE",
-                                                            headers:
-                                                                getApiHeaders(),
-                                                        },
-                                                    );
-
-                                                if (!response.ok) {
-                                                    const text =
-                                                        await response.text();
-                                                    setError(
-                                                        `Falha ao remover jogo: ${response.status}`,
-                                                    );
-                                                    console.error(
-                                                        "Erro ao deletar jogo:",
-                                                        text,
-                                                    );
-                                                    return;
-                                                }
-
-                                                setGames((current) =>
-                                                    current.filter(
-                                                        (item) =>
-                                                            item.id !==
-                                                            game.id,
-                                                    ),
-                                                );
-                                                setMessage(
-                                                    "Jogo removido com sucesso.",
-                                                );
-                                                onGameDeleted?.();
-                                            } catch (deleteError) {
-                                                console.error(
-                                                    "Erro ao deletar jogo:",
-                                                    deleteError,
-                                                );
-                                                setError(
-                                                    "Erro ao conectar com o backend.",
-                                                );
-                                            }
-                                        }}
-                                        className="flex-1 py-2.5 text-sm font-semibold text-red-300 border border-red-400/50 rounded-xl bg-red-400/5 hover:bg-red-400/15 hover:border-red-400 transition"
+                                        variant="danger"
+                                        className="flex-1"
+                                        onClick={() => setGameToDelete(game)}
                                     >
                                         Excluir
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
+            <ConfirmDialog
+                open={Boolean(gameToDelete)}
+                title="Excluir jogo"
+                description={
+                    gameToDelete
+                        ? `Tem certeza que deseja remover ${gameToDelete.title} do seu radar? Essa ação não pode ser desfeita.`
+                        : ""
+                }
+                confirmText="Excluir"
+                cancelText="Cancelar"
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setGameToDelete(null)}
+                loading={deleteLoading}
+            />
         </div>
     );
 }

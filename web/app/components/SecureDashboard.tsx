@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AddGameInput from "./AddGameInput";
+import Button from "./Button";
 import GameListClient from "./GameListClient";
 import { getToken, removeToken } from "../lib/api";
 
@@ -29,17 +30,15 @@ export default function SecureDashboard() {
                     painel de rastreamento.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Link
-                        href="/login"
-                        className="px-6 py-3 rounded-full bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400 transition"
-                    >
-                        Login
+                    <Link href="/login" className="flex-1">
+                        <Button type="button" variant="primary" className="w-full rounded-full">
+                            Login
+                        </Button>
                     </Link>
-                    <Link
-                        href="/signup"
-                        className="px-6 py-3 rounded-full border border-slate-700 text-white hover:border-emerald-400 hover:text-emerald-400 transition"
-                    >
-                        Cadastrar
+                    <Link href="/signup" className="flex-1">
+                        <Button type="button" variant="secondary" className="w-full rounded-full">
+                            Cadastrar
+                        </Button>
                     </Link>
                 </div>
             </div>
@@ -58,17 +57,19 @@ export default function SecureDashboard() {
                             Seus Jogos Monitorados
                         </h2>
                         <p className="mt-3 max-w-2xl text-slate-300 leading-relaxed">
-                            Adicione jogos da Steam, acompanhe o histórico de preços e mantenha seu radar sempre atualizado.
+                            Adicione jogos da Steam, acompanhe o histórico de
+                            preços e mantenha seu radar sempre atualizado.
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                        <button
+                        <Button
                             type="button"
+                            variant="danger"
                             onClick={handleLogout}
-                            className="rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/50 transition duration-200 shadow-lg shadow-red-500/10 hover:shadow-red-500/20"
+                            className="px-5 py-3 text-sm"
                         >
                             Logout
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </section>
