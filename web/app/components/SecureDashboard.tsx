@@ -30,17 +30,15 @@ export default function SecureDashboard() {
                     painel de rastreamento.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Link
-                        href="/login"
-                        className="px-6 py-3 rounded-full bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400 transition"
-                    >
-                        Login
+                    <Link href="/login" className="flex-1">
+                        <Button type="button" variant="primary" className="w-full rounded-full">
+                            Login
+                        </Button>
                     </Link>
-                    <Link
-                        href="/signup"
-                        className="px-6 py-3 rounded-full border border-slate-700 text-white hover:border-emerald-400 hover:text-emerald-400 transition"
-                    >
-                        Cadastrar
+                    <Link href="/signup" className="flex-1">
+                        <Button type="button" variant="secondary" className="w-full rounded-full">
+                            Cadastrar
+                        </Button>
                     </Link>
                 </div>
             </div>

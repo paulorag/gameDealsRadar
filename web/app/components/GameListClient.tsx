@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getApiUrl, getApiHeaders } from "../lib/api";
 import Button from "./Button";
 import ConfirmDialog from "./ConfirmDialog";
+import { useNotification } from "../hooks/useNotification";
 
 interface GameDto {
     id: string;
@@ -26,9 +27,9 @@ export default function GameListClient({
     const [games, setGames] = useState<GameDto[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
     const [gameToDelete, setGameToDelete] = useState<GameDto | null>(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const { success, error: notifyError } = useNotification();
 
     const handleConfirmDelete = async () => {
         if (!gameToDelete) return;
@@ -53,11 +54,11 @@ export default function GameListClient({
             setGames((current) =>
                 current.filter((item) => item.id !== gameToDelete.id),
             );
-            setMessage("Jogo removido com sucesso.");
+            success("Jogo removido", "Removido com sucesso do seu radar.");
             onGameDeleted?.();
             setGameToDelete(null);
         } catch {
-            setError("Erro ao conectar com o backend.");
+            notifyError("Erro ao remover", "Não foi possível conectar ao backend.");
         } finally {
             setDeleteLoading(false);
         }
@@ -121,11 +122,6 @@ export default function GameListClient({
 
     return (
         <div className="w-full max-w-5xl">
-            {message && (
-                <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">
-                    {message}
-                </div>
-            )}
             {games.length === 0 ? (
                 <div className="rounded-3xl border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
                     Ainda não há jogos no seu radar. Adicione um link da Steam

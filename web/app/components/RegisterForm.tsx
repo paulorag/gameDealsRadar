@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiUrl, setToken } from "../lib/api";
+import Button from "./Button";
 import { useNotification } from "../hooks/useNotification";
 
 export default function RegisterForm() {
@@ -70,22 +71,24 @@ export default function RegisterForm() {
                     placeholder="Senha"
                     className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500"
                 />
-                <button
+                <Button
                     type="submit"
                     disabled={loading}
-                    className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-3 rounded transition-colors disabled:opacity-50"
+                    variant="primary"
+                    className="w-full"
                 >
                     {loading ? "Cadastrando..." : "Criar conta"}
-                </button>
-                <p className="text-slate-400 text-sm">
-                    Já tem conta?{" "}
-                    <Link
-                        href="/login"
-                        className="text-emerald-300 hover:text-emerald-200"
-                    >
-                        Faça login
+                </Button>
+                <div className="flex flex-col gap-2 text-center">
+                    <p className="text-slate-400 text-sm">
+                        Já tem conta?
+                    </p>
+                    <Link href="/login" className="mx-auto">
+                        <Button type="button" variant="secondary">
+                            Faça login
+                        </Button>
                     </Link>
-                </p>
+                </div>
             </div>
         </form>
     );

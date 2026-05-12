@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getApiUrl, getApiHeaders } from "../lib/api";
+import Button from "./Button";
 import { useNotification } from "../hooks/useNotification";
 
 export default function AddGameInput({
@@ -82,13 +83,14 @@ export default function AddGameInput({
                     />
                 </div>
                 <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <button
+                    <Button
                         type="submit"
                         disabled={loading || !authenticated}
-                        className="cursor-pointer bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white font-bold px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
+                        variant="primary"
+                        className="w-full"
                     >
                         {loading ? "Adicionando..." : "Rastrear Jogo"}
-                    </button>
+                    </Button>
                     {!authenticated && (
                         <p className="text-yellow-300 text-sm font-medium">
                             ✓ Faça login para adicionar jogos
