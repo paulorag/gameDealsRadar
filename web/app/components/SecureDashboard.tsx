@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AddGameInput from "./AddGameInput";
+import Button from "./Button";
 import GameListClient from "./GameListClient";
 import { getToken, removeToken } from "../lib/api";
 
@@ -63,13 +64,14 @@ export default function SecureDashboard() {
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                        <button
+                        <Button
                             type="button"
+                            variant="danger"
                             onClick={handleLogout}
-                            className="cursor-pointer rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/50 transition duration-200 shadow-lg shadow-red-500/10 hover:shadow-red-500/20"
+                            className="px-5 py-3 text-sm"
                         >
                             Logout
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </section>

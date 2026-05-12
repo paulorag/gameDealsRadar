@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getApiUrl, getApiHeaders } from "../lib/api";
+import Button from "./Button";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface GameDto {
     id: string;
@@ -25,6 +27,36 @@ export default function GameListClient({
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
+    const [gameToDelete, setGameToDelete] = useState<GameDto | null>(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const handleConfirmDelete = async () => {
+        if (!gameToDelete) return;
+
+        setDeleteLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(`${getApiUrl()}/games/${gameToDelete.id}`, {
+                method: "DELETE",
+                headers: getApiHeaders(),
+            });
+
+            if (!response.ok) {
+                setError(`Falha ao remover jogo: ${response.status}`);
+                return;
+            }
+
+            setGames((current) => current.filter((item) => item.id !== gameToDelete.id));
+            setMessage("Jogo removido com sucesso.");
+            onGameDeleted?.();
+            setGameToDelete(null);
+        } catch {
+            setError("Erro ao conectar com o backend.");
+        } finally {
+            setDeleteLoading(false);
+        }
+    };
 
     useEffect(() => {
         async function loadGames() {
@@ -133,65 +165,39 @@ export default function GameListClient({
                                     </span>
                                 </div>
                                 <div className="flex gap-2 pt-2">
-                                    <Link
-                                        href={`/game/${game.id}`}
-                                        className="flex-1 text-center py-2.5 text-sm font-semibold text-emerald-300 border border-emerald-400/50 rounded-xl bg-emerald-400/5 hover:bg-emerald-400/15 hover:border-emerald-400 transition"
-                                    >
-                                        Detalhes
+                                    <Link href={`/game/${game.id}`} className="flex-1">
+                                        <Button type="button" variant="primary" className="w-full">
+                                            Detalhes
+                                        </Button>
                                     </Link>
-                                    <button
+                                    <Button
                                         type="button"
-                                        className="cursor-pointer rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/60 transition duration-200"
-                                        onClick={async () => {
-                                            const confirmed = window.confirm(
-                                                `Deseja remover ${game.title} da sua lista?`,
-                                            );
-                                            if (!confirmed) {
-                                                return;
-                                            }
-
-                                            try {
-                                                const response = await fetch(
-                                                    `${getApiUrl()}/games/${game.id}`,
-                                                    {
-                                                        method: "DELETE",
-                                                        headers:
-                                                            getApiHeaders(),
-                                                    },
-                                                );
-
-                                                if (!response.ok) {
-                                                    setError(
-                                                        `Falha ao remover jogo: ${response.status}`,
-                                                    );
-                                                    return;
-                                                }
-
-                                                setGames((current) =>
-                                                    current.filter(
-                                                        (item) =>
-                                                            item.id !== game.id,
-                                                    ),
-                                                );
-                                                setMessage(
-                                                    "Jogo removido com sucesso.",
-                                                );
-                                                onGameDeleted?.();
-                                            } catch {
-                                                setError(
-                                                    "Erro ao conectar com o backend.",
-                                                );
-                                            }
-                                        }}
+                                        variant="danger"
+                                        className="flex-1"
+                                        onClick={() => setGameToDelete(game)}
                                     >
                                         Excluir
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
+            <ConfirmDialog
+                open={Boolean(gameToDelete)}
+                title="Excluir jogo"
+                description={
+                    gameToDelete
+                        ? `Tem certeza que deseja remover ${gameToDelete.title} do seu radar? Essa ação não pode ser desfeita.`
+                        : ""
+                }
+                confirmText="Excluir"
+                cancelText="Cancelar"
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setGameToDelete(null)}
+                loading={deleteLoading}
+            />
         </div>
     );
 }
