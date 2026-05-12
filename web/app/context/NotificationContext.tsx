@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+    createContext,
+    useContext,
+    useState,
+    useCallback,
+    ReactNode,
+} from "react";
 
 export interface NotificationMessage {
     id: string;
@@ -15,10 +21,14 @@ interface NotificationContextType {
     removeNotification: (id: string) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+    undefined,
+);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-    const [notifications, setNotifications] = useState<NotificationMessage[]>([]);
+    const [notifications, setNotifications] = useState<NotificationMessage[]>(
+        [],
+    );
 
     const addNotification = useCallback(
         (notification: Omit<NotificationMessage, "id">) => {
@@ -30,7 +40,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                 removeNotification(id);
             }, 5000);
         },
-        []
+        [],
     );
 
     const removeNotification = useCallback((id: string) => {
@@ -38,7 +48,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }, []);
 
     return (
-        <NotificationContext.Provider value={{ notifications, addNotification, removeNotification }}>
+        <NotificationContext.Provider
+            value={{ notifications, addNotification, removeNotification }}
+        >
             {children}
         </NotificationContext.Provider>
     );
@@ -47,7 +59,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 export function useNotificationContext() {
     const context = useContext(NotificationContext);
     if (!context) {
-        throw new Error("useNotificationContext must be used within NotificationProvider");
+        throw new Error(
+            "useNotificationContext must be used within NotificationProvider",
+        );
     }
     return context;
 }

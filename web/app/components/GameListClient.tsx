@@ -141,6 +141,7 @@ export default function GameListClient({
                                     </Link>
                                     <button
                                         type="button"
+                                        className="cursor-pointer rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/60 transition duration-200"
                                         onClick={async () => {
                                             const confirmed = window.confirm(
                                                 `Deseja remover ${game.title} da sua lista?`,

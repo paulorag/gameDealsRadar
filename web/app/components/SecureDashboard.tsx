@@ -58,14 +58,15 @@ export default function SecureDashboard() {
                             Seus Jogos Monitorados
                         </h2>
                         <p className="mt-3 max-w-2xl text-slate-300 leading-relaxed">
-                            Adicione jogos da Steam, acompanhe o histórico de preços e mantenha seu radar sempre atualizado.
+                            Adicione jogos da Steam, acompanhe o histórico de
+                            preços e mantenha seu radar sempre atualizado.
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
                         <button
                             type="button"
                             onClick={handleLogout}
-                            className="rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/50 transition duration-200 shadow-lg shadow-red-500/10 hover:shadow-red-500/20"
+                            className="cursor-pointer rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-300 hover:bg-red-500/20 hover:border-red-500/50 transition duration-200 shadow-lg shadow-red-500/10 hover:shadow-red-500/20"
                         >
                             Logout
                         </button>

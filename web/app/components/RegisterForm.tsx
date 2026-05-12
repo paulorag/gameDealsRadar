@@ -28,13 +28,19 @@ export default function RegisterForm() {
 
             if (!response.ok) {
                 const data = await response.json().catch(() => null);
-                error("Erro ao cadastrar", data?.message || "Falha ao cadastrar usuário.");
+                error(
+                    "Erro ao cadastrar",
+                    data?.message || "Falha ao cadastrar usuário.",
+                );
                 return;
             }
 
             const data = await response.json();
             setToken(data.token);
-            success("Conta criada!", "Bem-vindo! Você foi cadastrado com sucesso.");
+            success(
+                "Conta criada!",
+                "Bem-vindo! Você foi cadastrado com sucesso.",
+            );
             router.push("/dashboard");
         } catch {
             error("Falha na conexão", "Não foi possível conectar ao servidor.");
