@@ -65,29 +65,36 @@ export default function AddGameInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full max-w-xl mb-8 flex flex-col gap-2"
+            className="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/50 p-6 shadow-lg shadow-slate-950/20"
         >
-            <input
-                type="url"
-                placeholder="Cole o link da loja Steam aqui..."
-                className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500 transition-colors"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                disabled={loading || !authenticated}
-            />
-            <div className="flex flex-col gap-2 sm:flex-row items-center">
-                <button
-                    type="submit"
-                    disabled={loading || !authenticated}
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-3 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {loading ? "Adicionando..." : "Rastrear"}
-                </button>
-                {!authenticated && (
-                    <p className="text-yellow-300 text-sm">
-                        Faça login para adicionar um jogo.
-                    </p>
-                )}
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
+                        Adicionar Novo Jogo
+                    </label>
+                    <input
+                        type="url"
+                        placeholder="https://store.steampowered.com/app/..."
+                        className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        disabled={loading || !authenticated}
+                    />
+                </div>
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                    <button
+                        type="submit"
+                        disabled={loading || !authenticated}
+                        className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white font-bold px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
+                    >
+                        {loading ? "Adicionando..." : "Rastrear Jogo"}
+                    </button>
+                    {!authenticated && (
+                        <p className="text-yellow-300 text-sm font-medium">
+                            ✓ Faça login para adicionar jogos
+                        </p>
+                    )}
+                </div>
             </div>
         </form>
     );

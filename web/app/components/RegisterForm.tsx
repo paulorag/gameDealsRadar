@@ -45,7 +45,7 @@ export default function RegisterForm() {
     return (
         <form
             onSubmit={handleRegister}
-            className="w-full max-w-xl mb-6 p-4 rounded-lg border border-slate-700 bg-slate-900"
+            className="w-full max-w-xl mx-auto mb-6 p-6 rounded-3xl border border-slate-700 bg-slate-900 shadow-xl shadow-slate-950/30"
         >
             <h2 className="text-lg font-bold text-white mb-4">Cadastro</h2>
             <div className="grid gap-4">
