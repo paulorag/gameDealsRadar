@@ -1,6 +1,6 @@
 "use client";
 
-import Notification, { NotificationMessage } from "./Notification";
+import Notification from "./Notification";
 import { useNotificationContext } from "../context/NotificationContext";
 
 export default function NotificationContainer() {

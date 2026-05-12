@@ -161,8 +161,6 @@ export default function GameListClient({
                                                 );
 
                                                 if (!response.ok) {
-                                                    const text =
-                                                        await response.text();
                                                     setError(
                                                         `Falha ao remover jogo: ${response.status}`,
                                                     );
@@ -179,13 +177,12 @@ export default function GameListClient({
                                                     "Jogo removido com sucesso.",
                                                 );
                                                 onGameDeleted?.();
-                                            } catch (deleteError) {
+                                            } catch {
                                                 setError(
                                                     "Erro ao conectar com o backend.",
                                                 );
                                             }
                                         }}
-                                        className="flex-1 py-2.5 text-sm font-semibold text-red-300 border border-red-400/50 rounded-xl bg-red-400/5 hover:bg-red-400/15 hover:border-red-400 transition"
                                     >
                                         Excluir
                                     </button>

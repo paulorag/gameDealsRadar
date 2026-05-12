@@ -30,6 +30,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         [],
     );
 
+    const removeNotification = useCallback((id: string) => {
+        setNotifications((prev) => prev.filter((n) => n.id !== id));
+    }, []);
+
     const addNotification = useCallback(
         (notification: Omit<NotificationMessage, "id">) => {
             const id = Date.now().toString();
@@ -40,12 +44,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                 removeNotification(id);
             }, 5000);
         },
-        [],
+        [removeNotification],
     );
-
-    const removeNotification = useCallback((id: string) => {
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
-    }, []);
 
     return (
         <NotificationContext.Provider
