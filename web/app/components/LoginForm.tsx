@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiUrl, getToken, removeToken, setToken } from "../lib/api";
+import { useNotification } from "../hooks/useNotification";
 
 export default function LoginForm({
     onAuthChange,
@@ -13,9 +14,9 @@ export default function LoginForm({
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
     const [token, setLocalToken] = useState<string | null>(null);
     const router = useRouter();
+    const { success, error } = useNotification();
 
     useEffect(() => {
         setLocalToken(getToken());
@@ -23,7 +24,6 @@ export default function LoginForm({
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
-        setError("");
         setLoading(true);
 
         try {
@@ -40,7 +40,7 @@ export default function LoginForm({
                     response.status === 401
                         ? "Credenciais inválidas."
                         : "Falha ao autenticar.";
-                setError(message);
+                error("Erro ao fazer login", message);
                 return;
             }
 
@@ -49,10 +49,11 @@ export default function LoginForm({
             setLocalToken(data.token);
             setUsername("");
             setPassword("");
+            success("Bem-vindo!", "Você foi autenticado com sucesso.");
             onAuthChange?.();
             router.push("/dashboard");
         } catch {
-            setError("Falha ao conectar com o servidor.");
+            error("Falha na conexão", "Não foi possível conectar ao servidor.");
         } finally {
             setLoading(false);
         }
@@ -110,7 +111,6 @@ export default function LoginForm({
                     placeholder="Senha"
                     className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500"
                 />
-                {error && <p className="text-red-400">{error}</p>}
                 <button
                     type="submit"
                     disabled={loading}

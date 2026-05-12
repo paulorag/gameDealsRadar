@@ -1,14 +1,11 @@
 "use client";
 
 import Notification, { NotificationMessage } from "./Notification";
+import { useNotificationContext } from "../context/NotificationContext";
 
-export default function NotificationContainer({
-    notifications,
-    onRemove,
-}: {
-    notifications: NotificationMessage[];
-    onRemove: (id: string) => void;
-}) {
+export default function NotificationContainer() {
+    const { notifications, removeNotification } = useNotificationContext();
+
     if (notifications.length === 0) return null;
 
     return (
@@ -17,7 +14,7 @@ export default function NotificationContainer({
                 <div key={notification.id} className="pointer-events-auto">
                     <Notification
                         notification={notification}
-                        onClose={() => onRemove(notification.id)}
+                        onClose={() => removeNotification(notification.id)}
                     />
                 </div>
             ))}

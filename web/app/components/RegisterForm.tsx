@@ -4,17 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getApiUrl, setToken } from "../lib/api";
+import { useNotification } from "../hooks/useNotification";
 
 export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
     const router = useRouter();
+    const { success, error } = useNotification();
 
     const handleRegister = async (event: React.FormEvent) => {
         event.preventDefault();
-        setError("");
         setLoading(true);
 
         try {
@@ -28,15 +28,16 @@ export default function RegisterForm() {
 
             if (!response.ok) {
                 const data = await response.json().catch(() => null);
-                setError(data?.message || "Falha ao cadastrar usuário.");
+                error("Erro ao cadastrar", data?.message || "Falha ao cadastrar usuário.");
                 return;
             }
 
             const data = await response.json();
             setToken(data.token);
+            success("Conta criada!", "Bem-vindo! Você foi cadastrado com sucesso.");
             router.push("/dashboard");
         } catch {
-            setError("Falha ao conectar com o servidor.");
+            error("Falha na conexão", "Não foi possível conectar ao servidor.");
         } finally {
             setLoading(false);
         }
@@ -63,7 +64,6 @@ export default function RegisterForm() {
                     placeholder="Senha"
                     className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500"
                 />
-                {error && <p className="text-red-400">{error}</p>}
                 <button
                     type="submit"
                     disabled={loading}
