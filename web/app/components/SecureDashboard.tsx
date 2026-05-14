@@ -21,7 +21,7 @@ export default function SecureDashboard() {
 
     if (!token) {
         return (
-            <div className="w-full max-w-3xl p-8 rounded-3xl border border-slate-700 bg-slate-900 text-center">
+            <div className="w-full max-w-3xl mx-auto p-8 rounded-3xl border border-slate-700 bg-slate-900 text-center">
                 <h2 className="text-2xl font-bold text-white mb-4">
                     Acesso restrito
                 </h2>
@@ -31,12 +31,20 @@ export default function SecureDashboard() {
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Link href="/login" className="flex-1">
-                        <Button type="button" variant="primary" className="w-full rounded-full">
+                        <Button
+                            type="button"
+                            variant="primary"
+                            className="w-full rounded-full"
+                        >
                             Login
                         </Button>
                     </Link>
                     <Link href="/signup" className="flex-1">
-                        <Button type="button" variant="secondary" className="w-full rounded-full">
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            className="w-full rounded-full"
+                        >
                             Cadastrar
                         </Button>
                     </Link>

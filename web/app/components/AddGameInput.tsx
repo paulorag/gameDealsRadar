@@ -66,37 +66,43 @@ export default function AddGameInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/50 p-6 shadow-lg shadow-slate-950/20"
+            className="w-full max-w-7xl mx-auto rounded-[32px] border border-slate-700/50 bg-slate-900/50 p-8 shadow-lg backdrop-blur-sm"
         >
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
-                        Adicionar Novo Jogo
-                    </label>
-                    <input
-                        type="url"
-                        placeholder="https://store.steampowered.com/app/..."
-                        className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-colors"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        disabled={loading || !authenticated}
-                    />
-                </div>
-                <div className="flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex flex-col gap-6">
+                <label className="text-xs font-bold text-emerald-400 uppercase tracking-[0.3em]">
+                    Adicionar Novo Jogo
+                </label>
+
+                <div className="flex flex-col md:flex-row items-center gap-4">
+                    {/* Input agora ocupa todo o espaço restante */}
+                    <div className="relative flex-1 w-full">
+                        <input
+                            type="url"
+                            placeholder="Cole aqui o link da Steam (ex: https://store.steampowered.com/app/...)"
+                            className="w-full bg-slate-800/50 border border-slate-700 text-white pl-4 pr-4 py-4 rounded-2xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 transition-all placeholder:text-slate-500"
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            disabled={loading || !authenticated}
+                        />
+                    </div>
+
+                    {/* Botão alinhado ao lado no Desktop, abaixo no Mobile */}
                     <Button
                         type="submit"
                         disabled={loading || !authenticated}
                         variant="primary"
-                        className="w-full"
+                        className="w-full md:w-auto md:px-10 py-4 h-full rounded-2xl whitespace-nowrap"
                     >
                         {loading ? "Adicionando..." : "Rastrear Jogo"}
                     </Button>
-                    {!authenticated && (
-                        <p className="text-yellow-300 text-sm font-medium">
-                            ✓ Faça login para adicionar jogos
-                        </p>
-                    )}
                 </div>
+
+                {!authenticated && (
+                    <div className="flex items-center gap-2 text-yellow-400/80 text-sm bg-yellow-400/5 border border-yellow-400/20 w-fit px-4 py-2 rounded-lg">
+                        <span className="animate-pulse">●</span>
+                        Faça login para começar a rastrear novos preços
+                    </div>
+                )}
             </div>
         </form>
     );

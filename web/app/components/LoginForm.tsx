@@ -73,7 +73,11 @@ export default function LoginForm({
                     <p className="text-slate-200">Já está autenticado.</p>
                     <div className="flex gap-3">
                         <Link href="/dashboard" className="flex-1">
-                            <Button type="button" variant="secondary" className="w-full">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                className="w-full"
+                            >
                                 Abrir painel
                             </Button>
                         </Link>
@@ -121,9 +125,7 @@ export default function LoginForm({
                     {loading ? "Conectando..." : "Entrar"}
                 </Button>
                 <div className="flex flex-col gap-2 text-center">
-                    <p className="text-slate-400 text-sm">
-                        Não tem conta?
-                    </p>
+                    <p className="text-slate-400 text-sm">Não tem conta?</p>
                     <Link href="/signup" className="mx-auto">
                         <Button type="button" variant="secondary">
                             Cadastre-se
