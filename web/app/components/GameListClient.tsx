@@ -58,7 +58,10 @@ export default function GameListClient({
             onGameDeleted?.();
             setGameToDelete(null);
         } catch {
-            notifyError("Erro ao remover", "Não foi possível conectar ao backend.");
+            notifyError(
+                "Erro ao remover",
+                "Não foi possível conectar ao backend.",
+            );
         } finally {
             setDeleteLoading(false);
         }
@@ -121,21 +124,23 @@ export default function GameListClient({
     }
 
     return (
-        <div className="w-full max-w-5xl">
+        /* 1. Ajuste da largura para max-w-7xl e centralização */
+        <div className="w-full max-w-7xl mx-auto">
             {games.length === 0 ? (
-                <div className="rounded-3xl border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
+                <div className="rounded-[32px] border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
                     Ainda não há jogos no seu radar. Adicione um link da Steam
                     para começar.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
+                /* 2. Grid configurado para 4 colunas em telas 2xl */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full">
                     {games.map((game) => (
                         <div
                             key={game.id}
-                            className="group flex h-full flex-col justify-between rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-5 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
+                            className="group flex h-full flex-col justify-between rounded-[24px] border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
                         >
                             {game.imageUrl ? (
-                                <div className="relative w-full h-56 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
+                                <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
                                     <Image
                                         src={game.imageUrl}
                                         alt={game.title}
@@ -144,13 +149,13 @@ export default function GameListClient({
                                     />
                                 </div>
                             ) : (
-                                <div className="w-full h-56 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
+                                <div className="w-full h-48 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
                                     Sem Imagem
                                 </div>
                             )}
 
                             <h2
-                                className="text-lg font-bold text-white mb-3 truncate leading-tight group-hover:text-emerald-300 transition"
+                                className="text-base font-bold text-white mb-3 truncate leading-tight group-hover:text-emerald-300 transition"
                                 title={game.title}
                             >
                                 {game.title}
@@ -158,14 +163,14 @@ export default function GameListClient({
 
                             <div className="flex flex-col gap-4 mt-auto pt-3 border-t border-slate-700/50">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs uppercase tracking-wider text-slate-500">
+                                    <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">
                                         ID Steam:
                                     </span>
-                                    <span className="text-sm font-mono text-emerald-400">
+                                    <span className="text-xs font-mono text-emerald-400">
                                         {game.steamAppId}
                                     </span>
                                 </div>
-                                <div className="flex gap-2 pt-2">
+                                <div className="flex gap-2 pt-1">
                                     <Link
                                         href={`/game/${game.id}`}
                                         className="flex-1"
@@ -173,7 +178,7 @@ export default function GameListClient({
                                         <Button
                                             type="button"
                                             variant="primary"
-                                            className="w-full"
+                                            className="w-full text-xs py-2 px-0"
                                         >
                                             Detalhes
                                         </Button>
@@ -181,7 +186,7 @@ export default function GameListClient({
                                     <Button
                                         type="button"
                                         variant="danger"
-                                        className="flex-1"
+                                        className="flex-1 text-xs py-2 px-0"
                                         onClick={() => setGameToDelete(game)}
                                     >
                                         Excluir

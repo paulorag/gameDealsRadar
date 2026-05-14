@@ -80,9 +80,7 @@ export default function RegisterForm() {
                     {loading ? "Cadastrando..." : "Criar conta"}
                 </Button>
                 <div className="flex flex-col gap-2 text-center">
-                    <p className="text-slate-400 text-sm">
-                        Já tem conta?
-                    </p>
+                    <p className="text-slate-400 text-sm">Já tem conta?</p>
                     <Link href="/login" className="mx-auto">
                         <Button type="button" variant="secondary">
                             Faça login
