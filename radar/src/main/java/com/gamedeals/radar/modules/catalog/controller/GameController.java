@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     @CacheEvict(value = { "games", "gameHistory" }, allEntries = true)
     public ResponseEntity<Void> deleteGame(@PathVariable UUID id) {
