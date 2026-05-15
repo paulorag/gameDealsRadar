@@ -15,8 +15,8 @@ export function useNotification() {
         warning: (title: string, message: string) => {
             addNotification({ type: "warning", title, message });
         },
-        info: (title: string, message: string) => {
-            addNotification({ type: "info", title, message });
+        info: (title: string, message: string, duration?: number) => {
+            addNotification({ type: "info", title, message, duration });
         },
     };
 }

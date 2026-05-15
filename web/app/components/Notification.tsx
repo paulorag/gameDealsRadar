@@ -9,6 +9,7 @@ export interface NotificationMessage {
     type: NotificationType;
     title: string;
     message?: string;
+    duration?: number;
 }
 
 const notificationStyles = {
@@ -27,18 +28,33 @@ const notificationStyles = {
         iconColor: "text-red-400",
     },
     warning: {
+        bg: "bg-orange-500/10",
+        border: "border-orange-500/30",
+        text: "text-orange-200",
+        icon: "⚠",
+        iconColor: "text-orange-400",
+    },
+    info: {
         bg: "bg-yellow-500/10",
         border: "border-yellow-500/30",
         text: "text-yellow-200",
-        icon: "⚠",
+        icon: (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        ),
         iconColor: "text-yellow-400",
-    },
-    info: {
-        bg: "bg-blue-500/10",
-        border: "border-blue-500/30",
-        text: "text-blue-200",
-        icon: "ℹ",
-        iconColor: "text-blue-400",
     },
 };
 
@@ -53,13 +69,14 @@ export default function Notification({
     const style = notificationStyles[notification.type];
 
     useEffect(() => {
+        const displayDuration = notification.duration || 5000;
         const timer = setTimeout(() => {
             setIsVisible(false);
             setTimeout(onClose, 300);
-        }, 5000);
+        }, displayDuration);
 
         return () => clearTimeout(timer);
-    }, [onClose]);
+    }, [onClose, notification.duration]);
 
     return (
         <div
@@ -74,7 +91,7 @@ export default function Notification({
             >
                 <div className="flex items-start gap-3">
                     <div
-                        className={`flex-shrink-0 text-xl font-bold ${style.iconColor}`}
+                        className={`flex-shrink-0 text-xl font-bold mt-0.5 ${style.iconColor}`}
                     >
                         {style.icon}
                     </div>
@@ -95,7 +112,7 @@ export default function Notification({
                             setIsVisible(false);
                             setTimeout(onClose, 300);
                         }}
-                        className={`flex-shrink-0 text-lg opacity-60 hover:opacity-100 transition ${style.text}`}
+                        className={`flex-shrink-0 cursor-pointer text-lg opacity-60 hover:opacity-100 transition ${style.text}`}
                     >
                         ×
                     </button>

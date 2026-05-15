@@ -13,6 +13,7 @@ export interface NotificationMessage {
     type: "success" | "error" | "warning" | "info";
     title: string;
     message: string;
+    duration?: number;
 }
 
 interface NotificationContextType {
@@ -37,12 +38,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const addNotification = useCallback(
         (notification: Omit<NotificationMessage, "id">) => {
             const id = Date.now().toString();
+            const duration = notification.duration || 5000;
+
             setNotifications((prev) => [...prev, { ...notification, id }]);
 
-            // Auto-dismiss after 5 seconds
             setTimeout(() => {
                 removeNotification(id);
-            }, 5000);
+            }, duration);
         },
         [removeNotification],
     );
