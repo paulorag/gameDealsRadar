@@ -33,6 +33,7 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
             }, 4000);
 
             await pingPromise;
+
             clearTimeout(timeoutId);
             setIsWakingUp(false);
         };
