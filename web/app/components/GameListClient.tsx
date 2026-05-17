@@ -12,6 +12,7 @@ interface GameDto {
     id: string;
     steamAppId: string;
     title: string;
+    urlLink: string;
     imageUrl?: string;
 }
 
@@ -137,7 +138,7 @@ export default function GameListClient({
                     {games.map((game) => (
                         <div
                             key={game.id}
-                            className="group flex h-full flex-col justify-between rounded-[24px] border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
+                            className="group relative flex h-full flex-col justify-between rounded-[24px] border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
                         >
                             {game.imageUrl ? (
                                 <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
@@ -145,11 +146,27 @@ export default function GameListClient({
                                         src={game.imageUrl}
                                         alt={game.title}
                                         fill
-                                        className="object-cover group-hover:scale-105 transition duration-300"
+                                        className="object-cover object-center group-hover:scale-105 transition duration-300"
                                     />
+                                    <a
+                                        href={game.urlLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title="Ver na Steam"
+                                        aria-label="Ver na Steam"
+                                        className="absolute top-3 right-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-950/90 ring-1 ring-slate-800/40 transition"
+                                    >
+                                        <Image
+                                            src="/assets/steam_logo.png"
+                                            alt="Steam"
+                                            width={28}
+                                            height={28}
+                                            className="h-7 w-7"
+                                        />
+                                    </a>
                                 </div>
                             ) : (
-                                <div className="w-full h-48 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
+                                <div className="relative w-full h-48 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
                                     Sem Imagem
                                 </div>
                             )}

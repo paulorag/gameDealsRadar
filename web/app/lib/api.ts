@@ -29,6 +29,7 @@ export function setToken(token: string) {
     }
 
     localStorage.setItem(TOKEN_STORAGE_KEY, token);
+    window.dispatchEvent(new Event("authChange"));
 }
 
 export function removeToken() {
@@ -37,6 +38,7 @@ export function removeToken() {
     }
 
     localStorage.removeItem(TOKEN_STORAGE_KEY);
+    window.dispatchEvent(new Event("authChange"));
 }
 
 export function getApiHeaders(contentType = "application/json") {

@@ -1,53 +1,49 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AddGameInput from "./AddGameInput";
-import Button from "./Button";
 import GameListClient from "./GameListClient";
-import { getToken, removeToken } from "../lib/api";
+import { getToken } from "../lib/api";
 
 export default function SecureDashboard() {
     const [token, setToken] = useState<string | null>(() => getToken());
     const [reloadSignal, setReloadSignal] = useState(0);
-    const router = useRouter();
-
-    const handleLogout = () => {
-        removeToken();
-        setToken(null);
-        router.push("/login");
-    };
 
     if (!token) {
         return (
-            <div className="w-full max-w-3xl mx-auto p-8 rounded-3xl border border-slate-700 bg-slate-900 text-center">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                    Acesso restrito
-                </h2>
-                <p className="text-slate-300 mb-6">
-                    Você precisa fazer login ou cadastrar-se para acessar o
-                    painel de rastreamento.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Link href="/login" className="flex-1">
-                        <Button
-                            type="button"
-                            variant="primary"
-                            className="w-full rounded-full"
-                        >
-                            Login
-                        </Button>
-                    </Link>
-                    <Link href="/signup" className="flex-1">
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            className="w-full rounded-full"
-                        >
-                            Cadastrar
-                        </Button>
-                    </Link>
+            <div className="min-h-[60vh] flex items-center justify-center">
+                <div className="w-full max-w-md p-10 rounded-3xl border border-slate-700 bg-slate-900/80 text-center">
+                    <div className="flex items-center justify-center mb-6">
+                        <div className="relative inline-flex">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="h-20 w-20 text-slate-400"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                            >
+                                <rect
+                                    x="6"
+                                    y="10"
+                                    width="12"
+                                    height="9"
+                                    rx="2"
+                                />
+                                <path d="M9 10V8a3 3 0 0 1 6 0v2" />
+                            </svg>
+                            <span className="absolute -top-2 -right-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold">
+                                !
+                            </span>
+                        </div>
+                    </div>
+
+                    <h2 className="text-2xl font-bold text-white mb-4">
+                        Acesso Restrito
+                    </h2>
+                    <p className="text-slate-300">
+                        Faça login ou cadastre-se para acessar o painel.
+                    </p>
                 </div>
             </div>
         );
@@ -70,14 +66,7 @@ export default function SecureDashboard() {
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                        <Button
-                            type="button"
-                            variant="danger"
-                            onClick={handleLogout}
-                            className="px-5 py-3 text-sm"
-                        >
-                            Logout
-                        </Button>
+                        {/* Logout is handled by the global Header */}
                     </div>
                 </div>
             </section>

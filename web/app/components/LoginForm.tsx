@@ -81,14 +81,6 @@ export default function LoginForm({
                                 Abrir painel
                             </Button>
                         </Link>
-                        <Button
-                            type="button"
-                            variant="danger"
-                            onClick={handleLogout}
-                            className="w-full"
-                        >
-                            Logout
-                        </Button>
                     </div>
                 </div>
             </div>

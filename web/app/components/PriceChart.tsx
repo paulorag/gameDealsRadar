@@ -22,14 +22,13 @@ export default function PriceChart({ data }: PriceChartProps) {
         .sort(
             (a, b) =>
                 new Date(a.checkDate).getTime() -
-                new Date(b.checkDate).getTime()
+                new Date(b.checkDate).getTime(),
         )
         .map((item) => ({
             date: new Date(item.checkDate).toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
+                year: "2-digit",
             }),
             price: item.price,
         }));

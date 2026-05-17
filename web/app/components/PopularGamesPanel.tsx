@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getApiUrl } from "../lib/api";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "./Button";
+import { useAuthStatus } from "../hooks/useAuthStatus";
 
 interface PopularGame {
     id: string;
@@ -16,6 +18,7 @@ interface PopularGame {
 }
 
 export default function PopularGamesPanel() {
+    const { authenticated } = useAuthStatus();
     const [games, setGames] = useState<PopularGame[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -75,52 +78,84 @@ export default function PopularGamesPanel() {
                 <h2 className="text-2xl font-bold text-white">
                     Jogos Mais Adicionados 🔥
                 </h2>
-                <Link
-                    href="/login"
-                    className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition"
-                >
-                    Faça login para adicionar →
-                </Link>
+                {authenticated && (
+                    <Link
+                        href="/dashboard"
+                        className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition"
+                    >
+                        Vá para seu painel →
+                    </Link>
+                )}
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 {games.map((game) => (
                     <div
                         key={game.id}
-                        className="group rounded-2xl border border-slate-700/50 bg-slate-800/50 overflow-hidden transition hover:border-slate-600"
+                        className="group relative flex h-full flex-col justify-between rounded-[24px] border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
                     >
-                        <div className="relative aspect-video overflow-hidden bg-slate-900">
-                            {game.imageUrl ? (
+                        {game.imageUrl ? (
+                            <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
                                 <Image
                                     src={game.imageUrl}
                                     alt={game.title}
                                     fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    className="object-cover object-center group-hover:scale-105 transition duration-300"
                                 />
-                            ) : (
-                                <div className="w-full h-full bg-slate-700 flex items-center justify-center text-slate-400">
-                                    Sem imagem
-                                </div>
-                            )}
-                            <div className="absolute top-2 right-2 bg-emerald-500/90 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                                {game.userCount}{" "}
-                                {game.userCount === 1 ? "usuário" : "usuários"}
+                                <a
+                                    href={game.urlLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Ver na Steam"
+                                    aria-label="Ver na Steam"
+                                    className="absolute top-3 right-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-950/90 ring-1 ring-slate-800/40 transition"
+                                >
+                                    <Image
+                                        src="/assets/steam_logo.png"
+                                        alt="Steam"
+                                        width={28}
+                                        height={28}
+                                        className="h-7 w-7"
+                                    />
+                                </a>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="relative w-full h-48 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-400 border border-slate-600">
+                                Sem imagem
+                            </div>
+                        )}
 
-                        <div className="p-4">
-                            <h3 className="font-semibold text-white line-clamp-2 text-sm mb-2">
-                                {game.title}
-                            </h3>
+                        <h2
+                            className="text-base font-bold text-white mb-3 truncate leading-tight group-hover:text-emerald-300 transition"
+                            title={game.title}
+                        >
+                            {game.title}
+                        </h2>
 
-                            <a
-                                href={game.urlLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center w-full rounded-lg bg-slate-700/50 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-600"
-                            >
-                                Ver no Steam ↗
-                            </a>
+                        <div className="flex flex-col gap-4 mt-auto pt-3 border-t border-slate-700/50">
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">
+                                    ID Steam:
+                                </span>
+                                <span className="text-xs font-mono text-emerald-400">
+                                    {game.steamAppId}
+                                </span>
+                            </div>
+
+                            <div className="flex gap-2 pt-1">
+                                <Link
+                                    href={`/game/${game.id}`}
+                                    className="flex-1"
+                                >
+                                    <Button
+                                        type="button"
+                                        variant="primary"
+                                        className="w-full text-xs py-2 px-0"
+                                    >
+                                        Histórico de Preços
+                                    </Button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 ))}

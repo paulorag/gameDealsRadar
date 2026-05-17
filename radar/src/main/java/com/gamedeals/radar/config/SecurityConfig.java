@@ -30,7 +30,11 @@ public class SecurityConfig {
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authz -> authz
-                                                .requestMatchers("/auth/login", "/auth/register", "/games/popular",
+                                                .requestMatchers(
+                                                                "/auth/login",
+                                                                "/auth/register",
+                                                                "/games/popular",
+                                                                "/games/*/history",
                                                                 "/actuator/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
