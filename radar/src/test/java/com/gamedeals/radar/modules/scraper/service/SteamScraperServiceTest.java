@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,6 +34,7 @@ class SteamScraperServiceTest {
     @DisplayName("Deve extrair dados do HTML e salvar corretamente")
     void shouldExtractAndSaveGame() throws Exception {
         String url = "https://store.steampowered.com/app/12345/Jogo_Teste/";
+        UUID fakeUserId = UUID.randomUUID();
 
         String fakeHtml = """
                     <html>
@@ -50,9 +52,9 @@ class SteamScraperServiceTest {
 
         doReturn(fakeDoc).when(serviceSpy).fetchSteamPage(anyString());
 
-        when(gameRepository.findBySteamAppId("12345")).thenReturn(Optional.empty());
+        when(gameRepository.findByUserIdAndSteamAppId(fakeUserId, "12345")).thenReturn(Optional.empty());
 
-        serviceSpy.extractAndSaveGame(url);
+        serviceSpy.extractAndSaveGame(url, fakeUserId);
 
         ArgumentCaptor<Game> gameCaptor = ArgumentCaptor.forClass(Game.class);
         verify(gameRepository).save(gameCaptor.capture());
@@ -61,6 +63,7 @@ class SteamScraperServiceTest {
         assertEquals("Super Jogo Teste", savedGame.getTitle());
         assertEquals("12345", savedGame.getSteamAppId());
         assertEquals("https://steam.com/img.jpg", savedGame.getImageUrl());
+        assertEquals(fakeUserId, savedGame.getUserId());
 
         ArgumentCaptor<PriceHistory> historyCaptor = ArgumentCaptor.forClass(PriceHistory.class);
         verify(priceHistoryRepository).save(historyCaptor.capture());

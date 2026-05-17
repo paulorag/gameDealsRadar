@@ -15,7 +15,10 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("games", "gameHistory");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager(
+                "popularGames",
+                "userGames",
+                "gameHistory");
         cacheManager.setCaffeine(caffeineCacheBuilder());
         return cacheManager;
     }

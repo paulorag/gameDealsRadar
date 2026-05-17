@@ -10,6 +10,6 @@ public record PopularGameResponse(
         String urlLink,
         String imageUrl,
         BigDecimal targetPrice,
-        long userCount  // Quantos usuários têm este jogo
+        long userCount // Quantos usuários têm este jogo
 ) {
 }

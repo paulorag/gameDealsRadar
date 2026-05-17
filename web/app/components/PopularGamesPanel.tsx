@@ -50,7 +50,9 @@ export default function PopularGamesPanel() {
     if (loading) {
         return (
             <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30">
-                <h2 className="text-2xl font-bold text-white mb-6">Jogos Mais Adicionados 🔥</h2>
+                <h2 className="text-2xl font-bold text-white mb-6">
+                    Jogos Mais Adicionados 🔥
+                </h2>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {[...Array(6)].map((_, i) => (
                         <div
@@ -70,7 +72,9 @@ export default function PopularGamesPanel() {
     return (
         <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30">
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Jogos Mais Adicionados 🔥</h2>
+                <h2 className="text-2xl font-bold text-white">
+                    Jogos Mais Adicionados 🔥
+                </h2>
                 <Link
                     href="/login"
                     className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition"
@@ -99,7 +103,8 @@ export default function PopularGamesPanel() {
                                 </div>
                             )}
                             <div className="absolute top-2 right-2 bg-emerald-500/90 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                                {game.userCount} {game.userCount === 1 ? "usuário" : "usuários"}
+                                {game.userCount}{" "}
+                                {game.userCount === 1 ? "usuário" : "usuários"}
                             </div>
                         </div>
 

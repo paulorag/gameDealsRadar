@@ -21,7 +21,7 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
 
         const checkServerHealth = async (): Promise<boolean> => {
             try {
-                const response = await fetch(`${getApiUrl()}/games`, {
+                const response = await fetch(`${getApiUrl()}/games/popular`, {
                     method: "GET",
                     cache: "no-store",
                     signal: AbortSignal.timeout(5000),

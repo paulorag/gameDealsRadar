@@ -46,9 +46,9 @@ class GamePriceSchedulerTest {
 
         verify(gameRepository, times(1)).findAll();
 
-        verify(scraperService).extractAndSaveGame("https://store.steampowered.com/app/123/Wukong");
-        verify(scraperService).extractAndSaveGame("https://store.steampowered.com/app/456/Elden");
+        verify(scraperService).updateGamePrice("https://store.steampowered.com/app/123/Wukong");
+        verify(scraperService).updateGamePrice("https://store.steampowered.com/app/456/Elden");
 
-        verify(scraperService, times(2)).extractAndSaveGame(anyString());
+        verify(scraperService, times(2)).updateGamePrice(anyString());
     }
 }

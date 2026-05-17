@@ -9,6 +9,5 @@ public record GameResponse(
         String title,
         String urlLink,
         String imageUrl,
-        BigDecimal targetPrice
-) {
+        BigDecimal targetPrice) {
 }

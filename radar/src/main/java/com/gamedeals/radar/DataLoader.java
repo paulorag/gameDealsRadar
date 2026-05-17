@@ -14,13 +14,20 @@ public class DataLoader {
     CommandLineRunner initDatabase(SteamScraperService scraperService) {
         return args -> {
             System.out.println("Iniciando teste de Scraping...");
-
-            // Usar um UUID fixo para testes
             UUID testUserId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
-            scraperService.extractAndSaveGame("https://store.steampowered.com/app/2358720/Black_Myth_Wukong/", testUserId);
-
-            scraperService.extractAndSaveGame("https://store.steampowered.com/app/413150/Stardew_Valley/", testUserId);
+            try {
+                scraperService.extractAndSaveGame("https://store.steampowered.com/app/2358720/Black_Myth_Wukong/",
+                        testUserId);
+                scraperService.extractAndSaveGame("https://store.steampowered.com/app/413150/Stardew_Valley/",
+                        testUserId);
+                System.out.println("Scraping inicial concluído com sucesso!");
+            } catch (Exception e) {
+                // Se der erro de jogo duplicado, ele cai aqui, avisa, mas NÃO DESLIGA o
+                // servidor!
+                System.out.println(
+                        "⚠️ Scraping inicial ignorado: Jogos já existem no banco de dados ou houve erro de conexão.");
+            }
         };
     }
 }

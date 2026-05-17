@@ -55,7 +55,8 @@ public class SteamScraperService {
         }
     }
 
-    // Método público: atualizar preço de um jogo existente (usado por scheduler/job)
+    // Método público: atualizar preço de um jogo existente (usado por
+    // scheduler/job)
     public void updateGamePrice(String url) {
         log.info("Iniciando atualização de preço para URL: {}", url);
         try {
