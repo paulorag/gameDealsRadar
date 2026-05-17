@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,8 +27,9 @@ public class SteamScraperService {
     private final GameRepository gameRepository;
     private final PriceHistoryRepository priceHistoryRepository;
 
-    public void extractAndSaveGame(String url) {
-        log.info("Iniciando extração de dados para URL: {}", url);
+    // Novo método público: adicionar jogo de um usuário
+    public void extractAndSaveGame(String url, UUID userId) {
+        log.info("Iniciando extração de dados para URL: {} (userId: {})", url, userId);
         try {
             String steamAppId = extractAppIdFromUrl(url);
             if (steamAppId == null) {
@@ -35,9 +37,14 @@ public class SteamScraperService {
                 throw new IllegalArgumentException("URL inválida ou não é de um jogo da Steam");
             }
 
-            Document doc = fetchSteamPage(url);
+            // Verificar se o usuário já adicionou este jogo
+            Optional<Game> existingGame = gameRepository.findByUserIdAndSteamAppId(userId, steamAppId);
+            if (existingGame.isPresent()) {
+                throw new IllegalArgumentException("Este jogo já foi adicionado na sua lista");
+            }
 
-            saveGameData(doc, steamAppId, url);
+            Document doc = fetchSteamPage(url);
+            saveNewGame(doc, steamAppId, url, userId);
 
         } catch (IOException e) {
             log.error("Erro de conexão ao acessar URL: {}", url, e);
@@ -45,6 +52,33 @@ public class SteamScraperService {
         } catch (Exception e) {
             log.error("Erro inesperado ao processar URL: {}", url, e);
             throw new RuntimeException("Erro interno ao processar jogo", e);
+        }
+    }
+
+    // Método público: atualizar preço de um jogo existente (usado por scheduler/job)
+    public void updateGamePrice(String url) {
+        log.info("Iniciando atualização de preço para URL: {}", url);
+        try {
+            String steamAppId = extractAppIdFromUrl(url);
+            if (steamAppId == null) {
+                log.warn("URL inválida, não encontrei o ID: {}", url);
+                return;
+            }
+
+            // Buscar qualquer instância deste jogo (pode ser de vários usuários)
+            Optional<Game> existingGame = gameRepository.findBySteamAppId(steamAppId);
+            if (existingGame.isEmpty()) {
+                log.info("Jogo não encontrado no banco: {}", steamAppId);
+                return;
+            }
+
+            Document doc = fetchSteamPage(url);
+            updateGamePriceOnly(doc, existingGame.get());
+
+        } catch (IOException e) {
+            log.error("Erro de conexão ao acessar URL: {}", url, e);
+        } catch (Exception e) {
+            log.error("Erro inesperado ao processar URL: {}", url, e);
         }
     }
 
@@ -59,12 +93,58 @@ public class SteamScraperService {
                 .get();
     }
 
-    protected void saveGameData(Document doc, String steamAppId, String url) {
+    // Salvar novo jogo para um usuário
+    private void saveNewGame(Document doc, String steamAppId, String url, UUID userId) {
         log.debug("Extraindo dados da página para Steam App ID: {}", steamAppId);
 
         String title = doc.selectFirst("#appHubAppName").text();
         String imageUrl = doc.selectFirst("img.game_header_image_full").attr("src");
+        BigDecimal price = extractPrice(doc);
 
+        // Criar novo game associado ao usuário
+        Game game = new Game();
+        game.setSteamAppId(steamAppId);
+        game.setTitle(title);
+        game.setUrlLink(url);
+        game.setImageUrl(imageUrl);
+        game.setUserId(userId);
+
+        gameRepository.save(game);
+
+        PriceHistory history = new PriceHistory();
+        history.setGame(game);
+        history.setPrice(price);
+        priceHistoryRepository.save(history);
+
+        log.info("Novo jogo criado para usuário: {} | {} | Preço: R$ {}", userId, title, price);
+    }
+
+    // Atualizar apenas o preço de um jogo existente
+    private void updateGamePriceOnly(Document doc, Game game) {
+        log.debug("Atualizando preço para: {}", game.getTitle());
+
+        BigDecimal currentPrice = extractPrice(doc);
+
+        // Verificar se o preço mudou
+        Optional<PriceHistory> latestPrice = priceHistoryRepository.findFirstByGameOrderByCheckDateDesc(game);
+
+        if (latestPrice.isEmpty() || latestPrice.get().getPrice().compareTo(currentPrice) != 0) {
+            PriceHistory history = new PriceHistory();
+            history.setGame(game);
+            history.setPrice(currentPrice);
+            priceHistoryRepository.save(history);
+
+            if (latestPrice.isEmpty()) {
+                log.info("Histórico inicial criado para {}: preço R$ {}", game.getTitle(), currentPrice);
+            } else {
+                log.info("Histórico atualizado para {}: preço alterado para R$ {}", game.getTitle(), currentPrice);
+            }
+        } else {
+            log.debug("Preço inalterado para {}. Nenhum novo histórico registrado.", game.getTitle());
+        }
+    }
+
+    private BigDecimal extractPrice(Document doc) {
         Elements purchaseAreas = doc.select(".game_area_purchase_game");
         Element priceElement = null;
 
@@ -84,36 +164,7 @@ public class SteamScraperService {
             priceElement = doc.selectFirst(".game_purchase_price, .discount_final_price");
         }
 
-        BigDecimal price = cleanPrice(priceElement != null ? priceElement.text() : null);
-
-        Game game = gameRepository.findBySteamAppId(steamAppId)
-                .orElse(new Game());
-
-        boolean isNew = game.getId() == null;
-        game.setSteamAppId(steamAppId);
-        game.setTitle(title);
-        game.setUrlLink(url);
-        game.setImageUrl(imageUrl);
-
-        gameRepository.save(game);
-
-        Optional<PriceHistory> latestPrice = priceHistoryRepository.findFirstByGameOrderByCheckDateDesc(game);
-        if (latestPrice.isEmpty() || latestPrice.get().getPrice().compareTo(price) != 0) {
-            PriceHistory history = new PriceHistory();
-            history.setGame(game);
-            history.setPrice(price);
-            priceHistoryRepository.save(history);
-
-            if (latestPrice.isEmpty()) {
-                log.info("Histórico inicial criado para {}: preço R$ {}", title, price);
-            } else {
-                log.info("Histórico atualizado para {}: preço alterado para R$ {}", title, price);
-            }
-        } else {
-            log.info("Preço inalterado para {}. Nenhum novo histórico registrado.", title);
-        }
-
-        log.info("Jogo {} processado: {} | Preço: R$ {}", isNew ? "novo" : "atualizado", title, price);
+        return cleanPrice(priceElement != null ? priceElement.text() : null);
     }
 
     private BigDecimal cleanPrice(String priceText) {

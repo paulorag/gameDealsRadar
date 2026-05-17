@@ -34,7 +34,7 @@ public class GamePriceScheduler {
         for (Game game : games) {
             try {
                 log.debug("Verificando: {}", game.getTitle());
-                scraperService.extractAndSaveGame(game.getUrlLink());
+                scraperService.updateGamePrice(game.getUrlLink());
             } catch (Exception e) {
                 log.error("❌ Falha ao atualizar jogo: {}", game.getTitle(), e);
             }

@@ -79,7 +79,7 @@ export default function GameListClient({
             }
 
             try {
-                const response = await fetch(`${getApiUrl()}/games`, {
+                const response = await fetch(`${getApiUrl()}/games/my`, {
                     cache: "no-store",
                     headers: getApiHeaders(),
                 });

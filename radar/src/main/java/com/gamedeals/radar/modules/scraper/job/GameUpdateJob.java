@@ -27,7 +27,7 @@ public class GameUpdateJob {
         for (Game game : games) {
             try {
                 log.info("Atualizando: {}", game.getTitle());
-                scraperService.extractAndSaveGame(game.getUrlLink());
+                scraperService.updateGamePrice(game.getUrlLink());
 
                 Thread.sleep(2000);
             } catch (Exception e) {

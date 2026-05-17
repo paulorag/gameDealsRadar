@@ -21,7 +21,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "steam_app_id", unique = true, nullable = false)
+    @Column(name = "steam_app_id", nullable = false)
     private String steamAppId;
 
     @Column(nullable = false)
@@ -35,6 +35,9 @@ public class Game {
 
     @Column(name = "target_price")
     private java.math.BigDecimal targetPrice;
+
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @CreationTimestamp
     private Instant createdAt;

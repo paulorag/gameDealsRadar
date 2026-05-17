@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PopularGamesPanel from "./components/PopularGamesPanel";
 
 export default function Home() {
     return (
@@ -40,6 +41,8 @@ export default function Home() {
                         </Link>
                     </div>
                 </section>
+
+                <PopularGamesPanel />
 
                 <section className="grid gap-6 lg:grid-cols-3">
                     {[
