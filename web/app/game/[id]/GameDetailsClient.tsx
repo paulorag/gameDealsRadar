@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import GameHistoryClient from "./GameHistoryClient";
 import { useAuthStatus } from "../../hooks/useAuthStatus";
 
 export default function GameDetailsClient({ id }: { id: string }) {
-    const { authenticated, checked } = useAuthStatus();
+    const { checked } = useAuthStatus();
 
     useEffect(() => {
         if (!checked) return;

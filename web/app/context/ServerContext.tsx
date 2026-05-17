@@ -17,7 +17,6 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
         let pollIntervallId: NodeJS.Timeout;
-        let notificationShown = false;
 
         const checkServerHealth = async (): Promise<boolean> => {
             try {

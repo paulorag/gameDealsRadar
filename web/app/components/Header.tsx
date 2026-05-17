@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,10 +8,6 @@ import { getToken, removeToken } from "../lib/api";
 import Button from "./Button";
 
 export default function Header() {
-    const [authenticated, setAuthenticated] = useState(false);
-    const [username, setUsername] = useState<string | null>(null);
-    const router = useRouter();
-
     const getUsernameFromToken = (token: string | null) => {
         if (!token) return null;
         try {
@@ -31,11 +28,14 @@ export default function Header() {
         }
     };
 
-    useEffect(() => {
-        const token = getToken();
-        setAuthenticated(Boolean(token));
-        setUsername(getUsernameFromToken(token));
+    const token = getToken();
+    const [authenticated, setAuthenticated] = useState<boolean>(Boolean(token));
+    const [username, setUsername] = useState<string | null>(() =>
+        getUsernameFromToken(token),
+    );
+    const router = useRouter();
 
+    useEffect(() => {
         const handleStorage = (event: StorageEvent) => {
             if (event.key === "gameDealsRadarAuthToken") {
                 const newToken = event.newValue;
@@ -75,9 +75,11 @@ export default function Header() {
                         title="Home"
                         aria-label="Home do Game Deals Radar"
                     >
-                        <img
+                        <Image
                             src="/logo-radar.svg"
                             alt="Game Deals Radar logo"
+                            width={36}
+                            height={36}
                             className="h-9 w-9 shrink-0 object-contain"
                         />
                         <span className="text-lg font-semibold tracking-tight text-slate-100">

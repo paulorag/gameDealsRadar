@@ -6,7 +6,7 @@ import GameListClient from "./GameListClient";
 import { getToken } from "../lib/api";
 
 export default function SecureDashboard() {
-    const [token, setToken] = useState<string | null>(() => getToken());
+    const [token] = useState<string | null>(() => getToken());
     const [reloadSignal, setReloadSignal] = useState(0);
 
     if (!token) {

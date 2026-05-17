@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getApiUrl, getToken, removeToken, setToken } from "../lib/api";
+import { getApiUrl, getToken, setToken } from "../lib/api";
 import Button from "./Button";
 import { useNotification } from "../hooks/useNotification";
 
@@ -58,12 +58,6 @@ export default function LoginForm({
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleLogout = () => {
-        removeToken();
-        setLocalToken(null);
-        onAuthChange?.();
     };
 
     if (token) {
