@@ -40,7 +40,6 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
 
             timeoutId = setTimeout(() => {
                 setIsWakingUp(true);
-                notificationShown = true;
                 info(
                     "Servidor acordando ☕",
                     "Estamos ligando os motores. Como o servidor é gratuito, o primeiro acesso leva de 30 a 120 segundos. Aguarde...",
