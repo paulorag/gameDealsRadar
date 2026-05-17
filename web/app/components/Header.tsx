@@ -82,6 +82,19 @@ export default function Header() {
                             height={36}
                             className="h-9 w-9 shrink-0 object-contain"
                         />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-5 w-5 text-emerald-400"
+                        >
+                            <path d="M3 11.5 12 4l9 7.5" />
+                            <path d="M9 21V13h6v8" />
+                        </svg>
                         <span className="text-lg font-semibold tracking-tight text-slate-100">
                             Game Deals Radar
                         </span>
