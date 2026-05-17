@@ -2,9 +2,9 @@ import RegisterForm from "../components/RegisterForm";
 
 export default function SignupPage() {
     return (
-        <main className="min-h-screen flex items-center justify-center bg-slate-950 text-white p-8">
+        <main className="min-h-screen flex items-start justify-center bg-slate-950 text-white p-8 pt-16">
             <div className="w-full max-w-2xl mx-auto">
-                <div className="mb-8 text-center">
+                <div className="mb-6 text-center">
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
                         Cadastro
                     </h1>

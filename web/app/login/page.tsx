@@ -2,9 +2,9 @@ import LoginForm from "../components/LoginForm";
 
 export default function LoginPage() {
     return (
-        <main className="min-h-screen flex items-center justify-center bg-slate-950 text-white p-8">
+        <main className="min-h-screen flex items-start justify-center bg-slate-950 text-white p-8 pt-16">
             <div className="w-full max-w-2xl mx-auto">
-                <div className="mb-8 text-center">
+                <div className="mb-6 text-center">
                     <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
                         Login
                     </h1>
