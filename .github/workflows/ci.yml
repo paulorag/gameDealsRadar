@@ -42,7 +42,7 @@ jobs:
 
             - name: Install frontend dependencies
               working-directory: web
-              run: npm install
+              run: npm install --legacy-peer-deps
 
             - name: Lint frontend
               working-directory: web
