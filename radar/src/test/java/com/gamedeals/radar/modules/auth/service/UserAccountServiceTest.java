@@ -49,4 +49,12 @@ class UserAccountServiceTest {
 
         verify(userAccountRepository, never()).save(any());
     }
+
+    @Test
+    void shouldThrowUsernameNotFoundWhenUserDoesNotExist() {
+        when(userAccountRepository.findByUsername("missing")).thenReturn(java.util.Optional.empty());
+
+        assertThrows(org.springframework.security.core.userdetails.UsernameNotFoundException.class,
+                () -> userAccountService.loadUserByUsername("missing"));
+    }
 }

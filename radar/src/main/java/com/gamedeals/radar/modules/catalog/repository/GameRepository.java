@@ -19,7 +19,6 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
     // Verificar se o usuário já adicionou esse jogo (por steam app id)
     Optional<Game> findByUserIdAndSteamAppId(UUID userId, String steamAppId);
 
-    // Buscar todos os jogos para processamento
     @Query("SELECT g FROM Game g WHERE g.steamAppId IS NOT NULL ORDER BY g.steamAppId")
     List<Game> findAllOrderedBySteamAppId();
 }

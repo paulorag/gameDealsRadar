@@ -66,7 +66,7 @@ export default function AddGameInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-full max-w-7xl mx-auto rounded-[32px] border border-slate-700/50 bg-slate-900/50 p-8 shadow-lg backdrop-blur-sm"
+            className="w-full max-w-7xl mx-auto rounded-4xl border border-slate-700/50 bg-slate-900/50 p-8 shadow-lg backdrop-blur-sm"
         >
             <div className="flex flex-col gap-6">
                 <label className="text-xs font-bold text-emerald-400 uppercase tracking-[0.3em]">
@@ -74,7 +74,6 @@ export default function AddGameInput({
                 </label>
 
                 <div className="flex flex-col md:flex-row items-center gap-4">
-                    {/* Input agora ocupa todo o espaço restante */}
                     <div className="relative flex-1 w-full">
                         <input
                             type="url"

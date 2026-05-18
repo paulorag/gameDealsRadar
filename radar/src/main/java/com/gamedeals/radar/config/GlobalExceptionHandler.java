@@ -1,7 +1,6 @@
 package com.gamedeals.radar.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,24 +16,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-            errors.put(error.getField(), error.getDefaultMessage())
-        );
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         log.warn("Validation error: {}", errors);
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
-        log.error("Illegal argument: {}", ex.getMessage());
-        Map<String, String> error = Map.of("error", ex.getMessage());
-        return ResponseEntity.badRequest().body(error);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
-        log.error("Unexpected error", ex);
-        Map<String, String> error = Map.of("error", "Erro interno do servidor");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
 }

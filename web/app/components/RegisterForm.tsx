@@ -15,13 +15,16 @@ export default function RegisterForm() {
     const router = useRouter();
     const { success, error } = useNotification();
 
-    const passwordCriteria = useMemo(() => ({
-        hasMinLength: password.length >= 8,
-        hasUpperCase: /[A-Z]/.test(password),
-        hasLowerCase: /[a-z]/.test(password),
-        hasNumber: /[0-9]/.test(password),
-        hasSpecialChar: /[^A-Za-z0-9]/.test(password),
-    }), [password]);
+    const passwordCriteria = useMemo(
+        () => ({
+            hasMinLength: password.length >= 8,
+            hasUpperCase: /[A-Z]/.test(password),
+            hasLowerCase: /[a-z]/.test(password),
+            hasNumber: /[0-9]/.test(password),
+            hasSpecialChar: /[^A-Za-z0-9]/.test(password),
+        }),
+        [password],
+    );
 
     const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
     const passwordsMatch = password !== "" && password === confirmPassword;
@@ -103,42 +106,102 @@ export default function RegisterForm() {
                     </p>
                     <ul className="grid gap-2">
                         <li className="flex items-center gap-2">
-                            <span className={passwordCriteria.hasMinLength ? "text-emerald-400" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasMinLength
+                                        ? "text-emerald-400"
+                                        : "text-slate-500"
+                                }
+                            >
                                 {passwordCriteria.hasMinLength ? "✅" : "❌"}
                             </span>
-                            <span className={passwordCriteria.hasMinLength ? "text-slate-100" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasMinLength
+                                        ? "text-slate-100"
+                                        : "text-slate-500"
+                                }
+                            >
                                 Mínimo de 8 caracteres
                             </span>
                         </li>
                         <li className="flex items-center gap-2">
-                            <span className={passwordCriteria.hasUpperCase ? "text-emerald-400" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasUpperCase
+                                        ? "text-emerald-400"
+                                        : "text-slate-500"
+                                }
+                            >
                                 {passwordCriteria.hasUpperCase ? "✅" : "❌"}
                             </span>
-                            <span className={passwordCriteria.hasUpperCase ? "text-slate-100" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasUpperCase
+                                        ? "text-slate-100"
+                                        : "text-slate-500"
+                                }
+                            >
                                 Pelo menos uma letra maiúscula
                             </span>
                         </li>
                         <li className="flex items-center gap-2">
-                            <span className={passwordCriteria.hasLowerCase ? "text-emerald-400" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasLowerCase
+                                        ? "text-emerald-400"
+                                        : "text-slate-500"
+                                }
+                            >
                                 {passwordCriteria.hasLowerCase ? "✅" : "❌"}
                             </span>
-                            <span className={passwordCriteria.hasLowerCase ? "text-slate-100" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasLowerCase
+                                        ? "text-slate-100"
+                                        : "text-slate-500"
+                                }
+                            >
                                 Pelo menos uma letra minúscula
                             </span>
                         </li>
                         <li className="flex items-center gap-2">
-                            <span className={passwordCriteria.hasNumber ? "text-emerald-400" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasNumber
+                                        ? "text-emerald-400"
+                                        : "text-slate-500"
+                                }
+                            >
                                 {passwordCriteria.hasNumber ? "✅" : "❌"}
                             </span>
-                            <span className={passwordCriteria.hasNumber ? "text-slate-100" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasNumber
+                                        ? "text-slate-100"
+                                        : "text-slate-500"
+                                }
+                            >
                                 Pelo menos um número
                             </span>
                         </li>
                         <li className="flex items-center gap-2">
-                            <span className={passwordCriteria.hasSpecialChar ? "text-emerald-400" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasSpecialChar
+                                        ? "text-emerald-400"
+                                        : "text-slate-500"
+                                }
+                            >
                                 {passwordCriteria.hasSpecialChar ? "✅" : "❌"}
                             </span>
-                            <span className={passwordCriteria.hasSpecialChar ? "text-slate-100" : "text-slate-500"}>
+                            <span
+                                className={
+                                    passwordCriteria.hasSpecialChar
+                                        ? "text-slate-100"
+                                        : "text-slate-500"
+                                }
+                            >
                                 Pelo menos um caractere especial
                             </span>
                         </li>
@@ -152,8 +215,12 @@ export default function RegisterForm() {
                     className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded focus:outline-none focus:border-emerald-500"
                 />
                 {confirmPassword.length > 0 && (
-                    <p className={`text-sm ${passwordsMatch ? "text-emerald-400" : "text-rose-400"}`}>
-                        {passwordsMatch ? "Senhas coincidem." : "As senhas não coincidem."}
+                    <p
+                        className={`text-sm ${passwordsMatch ? "text-emerald-400" : "text-rose-400"}`}
+                    >
+                        {passwordsMatch
+                            ? "Senhas coincidem."
+                            : "As senhas não coincidem."}
                     </p>
                 )}
                 <Button

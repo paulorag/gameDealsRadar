@@ -91,7 +91,7 @@ export default function Notification({
             >
                 <div className="flex items-start gap-3">
                     <div
-                        className={`flex-shrink-0 text-xl font-bold mt-0.5 ${style.iconColor}`}
+                        className={`shrink-0 text-xl font-bold mt-0.5 ${style.iconColor}`}
                     >
                         {style.icon}
                     </div>
@@ -112,7 +112,7 @@ export default function Notification({
                             setIsVisible(false);
                             setTimeout(onClose, 300);
                         }}
-                        className={`flex-shrink-0 cursor-pointer text-lg opacity-60 hover:opacity-100 transition ${style.text}`}
+                        className={`shrink-0 cursor-pointer text-lg opacity-60 hover:opacity-100 transition ${style.text}`}
                     >
                         ×
                     </button>

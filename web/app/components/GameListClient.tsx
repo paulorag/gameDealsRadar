@@ -125,20 +125,18 @@ export default function GameListClient({
     }
 
     return (
-        /* 1. Ajuste da largura para max-w-7xl e centralização */
         <div className="w-full max-w-7xl mx-auto">
             {games.length === 0 ? (
-                <div className="rounded-[32px] border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
+                <div className="rounded-4xl border border-slate-700 bg-slate-900/80 p-10 text-slate-400 text-center">
                     Ainda não há jogos no seu radar. Adicione um link da Steam
                     para começar.
                 </div>
             ) : (
-                /* 2. Grid configurado para 4 colunas em telas 2xl */
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full">
                     {games.map((game) => (
                         <div
                             key={game.id}
-                            className="group relative flex h-full flex-col justify-between rounded-[24px] border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
+                            className="group relative flex h-full flex-col justify-between rounded-3xl border border-slate-700 bg-linear-to-br from-slate-800 to-slate-900 p-4 shadow-lg shadow-slate-950/30 transition duration-300 hover:border-emerald-500/50 hover:shadow-emerald-500/10"
                         >
                             {game.imageUrl ? (
                                 <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden border border-slate-600 group-hover:border-emerald-500/30 transition">
@@ -166,7 +164,7 @@ export default function GameListClient({
                                     </a>
                                 </div>
                             ) : (
-                                <div className="relative w-full h-48 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
+                                <div className="relative w-full h-48 bg-linear-to-br from-slate-700 to-slate-800 rounded-2xl mb-4 flex items-center justify-center text-slate-500 border border-slate-600">
                                     Sem Imagem
                                 </div>
                             )}

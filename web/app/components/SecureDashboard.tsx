@@ -51,7 +51,7 @@ export default function SecureDashboard() {
 
     return (
         <div className="w-full flex flex-col items-center gap-10">
-            <section className="w-full max-w-7xl rounded-3xl border border-slate-700/50 bg-gradient-to-br from-slate-900/90 to-slate-950/50 p-8 shadow-2xl shadow-slate-950/50 backdrop-blur-xl hover:border-slate-600/50 transition duration-300">
+            <section className="w-full max-w-7xl rounded-3xl border border-slate-700/50 bg-linear-to-br from-slate-900/90 to-slate-950/50 p-8 shadow-2xl shadow-slate-950/50 backdrop-blur-xl hover:border-slate-600/50 transition duration-300">
                 <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex-1">
                         <p className="text-xs uppercase tracking-[0.4em] text-emerald-400/70 font-semibold">
@@ -65,9 +65,7 @@ export default function SecureDashboard() {
                             preços e mantenha seu radar sempre atualizado.
                         </p>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                        {/* Logout is handled by the global Header */}
-                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3 shrink-0"></div>
                 </div>
             </section>
             <div className="w-full max-w-7xl">

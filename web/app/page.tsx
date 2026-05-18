@@ -4,12 +4,12 @@ export default function Home() {
     return (
         <main className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-8">
             <div className="w-full max-w-6xl space-y-12">
-                <section className="rounded-[36px] border border-slate-800 bg-slate-900/80 p-10 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
+                <section className="rounded-4xl border border-slate-800 bg-slate-900/80 p-10 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
                     <div className="text-center">
                         <p className="text-sm uppercase tracking-[0.35em] text-emerald-400/80">
                             Radar de ofertas
                         </p>
-                        <h1 className="mt-4 text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+                        <h1 className="mt-4 text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-cyan-500">
                             Radar de Ofertas
                         </h1>
                         <p className="mt-6 max-w-3xl mx-auto text-slate-300 text-lg sm:text-xl leading-8">

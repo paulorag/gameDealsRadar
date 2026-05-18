@@ -27,7 +27,6 @@ public class SteamScraperService {
     private final GameRepository gameRepository;
     private final PriceHistoryRepository priceHistoryRepository;
 
-    // Novo método público: adicionar jogo de um usuário
     public void extractAndSaveGame(String url, UUID userId) {
         log.info("Iniciando extração de dados para URL: {} (userId: {})", url, userId);
         try {
@@ -55,8 +54,6 @@ public class SteamScraperService {
         }
     }
 
-    // Método público: atualizar preço de um jogo existente (usado por
-    // scheduler/job)
     public void updateGamePrice(String url) {
         log.info("Iniciando atualização de preço para URL: {}", url);
         try {

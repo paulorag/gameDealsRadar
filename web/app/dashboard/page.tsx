@@ -8,7 +8,7 @@ export default function DashboardPage() {
                     <p className="text-sm uppercase tracking-[0.35em] text-emerald-400/80">
                         Dashboard
                     </p>
-                    <h1 className="mt-4 text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+                    <h1 className="mt-4 text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-cyan-500">
                         Seu radar de ofertas Steam
                     </h1>
                     <p className="mt-4 text-slate-400 max-w-3xl mx-auto leading-7">
