@@ -37,8 +37,21 @@ The technical highlight is automation: a backend **Scheduler** periodically chec
 
 - **Next.js 15 (React)**: Modern framework for rendering and routing.
 - **TypeScript**: Static typing for code safety.
-- **Tailwind CSS**: Responsive styling.
+- **Tailwind CSS**: Responsive styling with v4 canonical classes.
 - **Recharts**: Data visualization (Price history chart).
+- **React Hooks**: State management with `useState`, `useEffect`, `useContext`.
+- **Custom Components**: Header, Footer, Notifications, Price Charts, Game Lists.
+
+### Frontend Components
+
+- **Header**: Navigation bar with authentication status.
+- **Footer**: Brand information, quick links, and social media integration (GitHub, LinkedIn).
+- **Add Game Input**: Form for submitting Steam game URLs with validation.
+- **Game List**: Grid display of tracked games with price data.
+- **Price Chart**: Interactive charts showing price history trends.
+- **Notifications**: Toast notifications for user feedback (success, error, warning).
+- **Authentication Forms**: Login and registration with security tokens.
+- **Responsive Design**: Mobile-first approach with Tailwind CSS breakpoints.
 
 ### Infrastructure & Deploy
 
@@ -48,9 +61,23 @@ The technical highlight is automation: a backend **Scheduler** periodically chec
 
 ## ⚙️ Architecture and Features
 
+### Core Features
+
 1. **Smart Registration:** The user inputs only the Steam link. The Backend scrapes the data, extracts title, image, ID, and current price, and saves it to the database.
 2. **Continuous Monitoring:** A scheduled Job (`@Scheduled`) runs periodically in the background, checking for price changes in monitored games.
 3. **Price History:** Every variation is saved in a history table, enabling the generation of trend charts.
+4. **User Dashboard:** Personalized dashboard showing all tracked games and their current prices.
+5. **Popular Games Section:** Displays most-tracked games across the platform.
+6. **Real-time Price Charts:** Interactive charts powered by Recharts to visualize price trends over time.
+
+### UI/UX Features
+
+- **Responsive Design:** Mobile-first approach with support for all screen sizes.
+- **Toast Notifications:** User-friendly feedback system for all actions (add, delete, error).
+- **Authentication Flow:** Secure login/signup with JWT token management.
+- **Loading States:** Skeleton loaders and spinners for better user experience.
+- **Interactive Buttons:** Hover effects and state management for all interactive elements.
+- **Dark Theme:** Modern dark interface with emerald accent colors.
 
 ## 🛠️ How to Run Locally
 

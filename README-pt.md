@@ -37,8 +37,21 @@ O diferencial técnico é a automação: um **Scheduler** no backend verifica pe
 
 - **Next.js 15 (React)**: Framework moderno para renderização e rotas.
 - **TypeScript**: Tipagem estática para segurança do código.
-- **Tailwind CSS**: Estilização responsiva.
+- **Tailwind CSS**: Estilização responsiva com classes canônicas v4.
 - **Recharts**: Visualização de dados (Gráfico de histórico de preços).
+- **React Hooks**: Gerenciamento de estado com `useState`, `useEffect`, `useContext`.
+- **Componentes Customizados**: Header, Footer, Notificações, Gráficos de Preço, Listas de Jogos.
+
+### Componentes Frontend
+
+- **Header**: Barra de navegação com status de autenticação.
+- **Footer**: Informações da marca, links rápidos e integração de redes sociais (GitHub, LinkedIn).
+- **Add Game Input**: Formulário para adicionar URLs de jogos da Steam com validação.
+- **Game List**: Grade de jogos rastreados com dados de preço.
+- **Price Chart**: Gráficos interativos mostrando tendências do histórico de preços.
+- **Notificações**: Notificações toast para feedback do usuário (sucesso, erro, aviso).
+- **Formulários de Autenticação**: Login e cadastro com gestão de tokens de segurança.
+- **Design Responsivo**: Abordagem mobile-first com breakpoints do Tailwind CSS.
 
 ### Infraestrutura & Deploy
 
@@ -48,9 +61,23 @@ O diferencial técnico é a automação: um **Scheduler** no backend verifica pe
 
 ## ⚙️ Arquitetura e Funcionalidades
 
+### Funcionalidades Principais
+
 1. **Cadastro Inteligente:** O usuário insere apenas o link da Steam. O Backend faz o scrape, extrai título, imagem, ID e preço atual e salva no banco.
 2. **Monitoramento Contínuo:** Um Job agendado (`@Scheduled`) roda em background periodicamente, verificando se houve alteração de preços nos jogos monitorados.
 3. **Histórico de Preços:** Cada variação é salva em uma tabela de histórico, permitindo a geração de gráficos de tendência.
+4. **Dashboard do Usuário:** Painel personalizado mostrando todos os jogos rastreados e seus preços atuais.
+5. **Seção de Jogos Populares:** Exibe os jogos mais rastreados na plataforma.
+6. **Gráficos de Preços em Tempo Real:** Gráficos interativos utilizando Recharts para visualizar tendências de preço ao longo do tempo.
+
+### Funcionalidades de UI/UX
+
+- **Design Responsivo:** Abordagem mobile-first com suporte para todos os tamanhos de tela.
+- **Notificações Toast:** Sistema amigável de feedback para todas as ações (adicionar, deletar, erro).
+- **Fluxo de Autenticação:** Login/signup seguro com gerenciamento de tokens JWT.
+- **Estados de Carregamento:** Skeleton loaders e spinners para melhor experiência do usuário.
+- **Botões Interativos:** Efeitos hover e gerenciamento de estado para todos os elementos interativos.
+- **Tema Escuro:** Interface moderna com cores de destaque em esmeralda.
 
 ## 🛠️ Como Rodar Localmente
 
