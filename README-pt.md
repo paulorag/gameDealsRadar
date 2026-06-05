@@ -118,12 +118,27 @@ O diferencial técnico é a automação: um **Scheduler** no backend verifica pe
 
 ## 🗺️ Roadmap (Próximos Passos)
 
-Este projeto está em evolução constante. As próximas features planejadas são:
+### ✅ Funcionalidades Implementadas
 
-- [ ] **Sistema de Alertas:** Integração com Discord Webhooks para avisar quando um preço cair.
-- [ ] **Autenticação:** Login de usuários para listas de desejos privadas.
-- [ ] **Comparador de Lojas:** Suporte para Epic Games e Nuuvem.
-- [ ] **Dashboard:** Estatísticas avançadas de economia.
+- [x] **Sistema de Autenticação:** Login e cadastro de usuários com gerenciamento de tokens JWT.
+- [x] **Dashboard do Usuário:** Painel personalizado para rastrear jogos e preços.
+- [x] **Gráficos de Histórico de Preços:** Gráficos interativos com Recharts para visualizar tendências.
+- [x] **Componente Footer:** Informações da marca, links rápidos e integração de redes sociais.
+- [x] **Notificações Toast:** Sistema de feedback em tempo real para ações do usuário.
+- [x] **Design Responsivo:** Interface totalmente responsiva com mobile-first usando Tailwind CSS.
+- [x] **Seção de Jogos Populares:** Exibição dos jogos mais rastreados na plataforma.
+
+### 🚧 Funcionalidades em Desenvolvimento / Planejadas
+
+- [ ] **Sistema de Alertas:** Integração com Discord Webhooks para avisar quando preços caem.
+- [ ] **Notificações por Email:** Sistema alternativo de alertas via e-mail.
+- [ ] **Comparador de Lojas:** Suporte para comparação de preços com Epic Games e Nuuvem.
+- [ ] **Dashboard Avançado:** Estatísticas detalhadas de economia e insights de gastos.
+- [ ] **Compartilhamento de Listas:** Compartilhar listas de desejos com outros usuários.
+- [ ] **Predição de Preços:** Previsão de tendências de preço baseada em ML.
+- [ ] **Toggle Tema Escuro/Claro:** Preferência do usuário para tema da interface.
+
+Este projeto está em evolução constante. Sugestões e contribuições são bem-vindas!
 
 ## 🤝 Contribuição
 

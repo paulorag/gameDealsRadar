@@ -118,12 +118,27 @@ The technical highlight is automation: a backend **Scheduler** periodically chec
 
 ## 🗺️ Roadmap
 
-This project is in constant evolution. Upcoming features include:
+### ✅ Completed Features
 
-- [ ] **Alert System:** Discord Webhook integration to notify when prices drop.
-- [ ] **Authentication:** User login for private wishlists.
-- [ ] **Store Comparator:** Support for Epic Games and Nuuvem.
-- [ ] **Dashboard:** Advanced savings statistics.
+- [x] **Authentication System:** User login and signup with JWT token management.
+- [x] **User Dashboard:** Personalized dashboard for tracking games and prices.
+- [x] **Price History Charts:** Interactive charts with Recharts for visualizing price trends.
+- [x] **Footer Component:** Brand information, quick links, and social media integration.
+- [x] **Toast Notifications:** Real-time feedback system for user actions.
+- [x] **Responsive Design:** Full mobile-first responsive UI with Tailwind CSS.
+- [x] **Popular Games Section:** Display most-tracked games on the platform.
+
+### 🚧 In Progress / Planned Features
+
+- [ ] **Alert System:** Discord Webhook integration to notify users when prices drop below targets.
+- [ ] **Email Notifications:** Alternative notification method via email alerts.
+- [ ] **Store Comparator:** Support for Epic Games and Nuuvem price comparisons.
+- [ ] **Advanced Dashboard:** Detailed savings statistics and spending insights.
+- [ ] **Wishlist Sharing:** Share game wishlists with other users.
+- [ ] **Price Predictions:** ML-based price trend predictions.
+- [ ] **Dark/Light Theme Toggle:** User preference for interface theme.
+
+This project is in constant evolution. Suggestions and contributions are welcome!
 
 ## 🤝 Contribution
 
