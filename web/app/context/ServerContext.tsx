@@ -17,6 +17,7 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
         let pollIntervallId: NodeJS.Timeout;
+        let notificationShown = false;
 
         const checkServerHealth = async (): Promise<boolean> => {
             try {
@@ -40,11 +41,16 @@ export function ServerProvider({ children }: { children: React.ReactNode }) {
 
             timeoutId = setTimeout(() => {
                 setIsWakingUp(true);
-                info(
-                    "Servidor acordando ☕",
-                    "Estamos ligando os motores. Como o servidor é gratuito, o primeiro acesso leva de 30 a 120 segundos. Aguarde...",
-                    120000,
-                );
+                
+                // Show notification only once per session
+                if (!notificationShown) {
+                    notificationShown = true;
+                    info(
+                        "Servidor acordando ☕",
+                        "Estamos ligando os motores. Como o servidor é gratuito, o primeiro acesso leva de 30 a 120 segundos. Aguarde...",
+                        120000,
+                    );
+                }
 
                 pollIntervallId = setInterval(async () => {
                     const isHealthy = await checkServerHealth();
