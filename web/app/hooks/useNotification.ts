@@ -6,17 +6,17 @@ export function useNotification() {
     const { addNotification } = useNotificationContext();
 
     return {
-        success: (title: string, message: string) => {
-            addNotification({ type: "success", title, message });
+        success: (title: string, message: string): string => {
+            return addNotification({ type: "success", title, message });
         },
-        error: (title: string, message: string) => {
-            addNotification({ type: "error", title, message });
+        error: (title: string, message: string): string => {
+            return addNotification({ type: "error", title, message });
         },
-        warning: (title: string, message: string) => {
-            addNotification({ type: "warning", title, message });
+        warning: (title: string, message: string): string => {
+            return addNotification({ type: "warning", title, message });
         },
-        info: (title: string, message: string, duration?: number) => {
-            addNotification({ type: "info", title, message, duration });
+        info: (title: string, message: string, duration?: number): string => {
+            return addNotification({ type: "info", title, message, duration });
         },
     };
 }

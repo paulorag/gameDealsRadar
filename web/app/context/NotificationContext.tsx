@@ -18,7 +18,7 @@ export interface NotificationMessage {
 
 interface NotificationContextType {
     notifications: NotificationMessage[];
-    addNotification: (notification: Omit<NotificationMessage, "id">) => void;
+    addNotification: (notification: Omit<NotificationMessage, "id">) => string;
     removeNotification: (id: string) => void;
 }
 
@@ -45,6 +45,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             setTimeout(() => {
                 removeNotification(id);
             }, duration);
+
+            return id;
         },
         [removeNotification],
     );
